@@ -1,0 +1,23 @@
+{
+  "name": "yapi2typescript",
+  "version": "1.0.0",
+  "description": "> Yapi 生成 Typescript`请求方法`及`声明文件`工具",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node --files src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/wynne-cwb/yapi-generate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "commander": "^7.2.0",
+    "inquirer": "^8.1.1"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^7.3.2"
+  }
+}
