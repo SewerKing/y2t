@@ -1,3 +1,4 @@
+// 项目映射
 interface IProjectMapping {
   // api方法
   exportName: string,
@@ -5,6 +6,7 @@ interface IProjectMapping {
   wrapper: string
 }
 
+// 配置文件
 interface IConfig {
   // 账号
   account: string,
@@ -20,4 +22,11 @@ interface IConfig {
   projectMapping: { [key: number]: IProjectMapping },
   // 请求文件路径
   requestFilePath: string
+}
+
+// 列表信息
+interface IListItem {
+  name: string,
+  id: string
+  basepath: string,
 }
