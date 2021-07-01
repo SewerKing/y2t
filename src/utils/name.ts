@@ -28,15 +28,140 @@ export function underlineToHump(name: string, isBigHump = false) {
 export function zhCN2EN(text: string): Promise<string> {
   return new Promise((resolve, reject) => {
     if (/[\u4e00-\u9fa5]/.test(text)) {
-      const url = `http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i=${encodeURIComponent(text)}`
-      http.get(url).then(res => {
-        resolve(underlineToHump(res.data.translateResult[0][0].tgt, true));
-      }).catch(err => {
-        console.log("有道翻译接口请求失败：", err)
-        reject(err);
-      })
+      const url = `http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i=${encodeURIComponent(
+        text
+      )}`
+      http
+        .get(url)
+        .then((res) => {
+          const text = res.data.translateResult[0][0].tgt.replace(/\s+/g, "");
+          resolve(underlineToHump(text, true))
+        })
+        .catch((err) => {
+          throw new Error("有道翻译接口请求失败")
+        })
     } else {
-      resolve(underlineToHump(text, true));
+      resolve(underlineToHump(text, true))
     }
   })
+}
+
+/**
+ * @description 接口path路径变为驼峰
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @param api
+ * @param [isBigHump=true]
+ * @return {*} 
+ */
+export function pathToHump(api: IApiInfoResponse, isBigHump = true) {
+  let name = api.path.replace(/[{|}]/g, '').replace(/\//g, '_')
+  name = underlineToHump(name, isBigHump);
+  return name
+}
+
+
+/**
+ * @description 获取接口的Response名字
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @param api
+ * @return {*} 
+ */
+export function getResponseName(api: IApiInfoResponse) {
+  const name = pathToHump(api);
+  const method = api.method.slice(0, 1).toUpperCase() + api.method.slice(1).toLocaleLowerCase()
+  return `I${method}${name}Response`;
+}
+
+
+/**
+ * @description 获取接口的Params名字
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @param api
+ * @return {*} 
+ */
+export function getRequestName(api: IApiInfoResponse) {
+  const name = pathToHump(api);
+  const method = api.method.slice(0, 1).toUpperCase() + api.method.slice(1).toLocaleLowerCase()
+  return `I${method}${name}Request`;
+}
+
+/**
+ * @description 获取接口的Query名字
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @param api
+ * @return {*} 
+ */
+export function getQueryName(api: IApiInfoResponse) {
+  const name = pathToHump(api);
+  const method = api.method.slice(0, 1).toUpperCase() + api.method.slice(1).toLocaleLowerCase()
+  return `I${method}${name}Query`;
+}
+
+/**
+ * @description 获取命名空间
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @return {*} 
+ */
+export function getNamespace(projectName: string) {
+  return underlineToHump(projectName, true)
+}
+
+/**
+ * @description 获取接口Query声明文件地址
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @return {*} 
+ */
+export function getQueryPath(namespace: string, api: IApiInfoResponse) {
+  return `${namespace}.Request.${getQueryName(api)}`
+}
+
+/** 
+ * @description 获取Body声明文件路径
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @param namespace
+ * @param api
+ * @return {*} 
+ */
+export function getBodyPath(namespace: string, api: IApiInfoResponse) {
+  return `${namespace}.Request.${getRequestName(api)}`
+}
+
+/**
+ * @description 获取Respones声明文件路径
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @param namespace
+ * @param api
+ * @return {*} 
+ */
+export function getResponesPath(namespace: string, api: IApiInfoResponse) {
+  return `${namespace}.Response.${getResponseName(api)}`
+}
+
+/**
+ * @description 通过path生成接口名字
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @param api
+ * @return {*} 
+ */
+export function getInterfaceName(api: IApiInfoResponse) {
+  const name = pathToHump(api);
+  return `${api.method.toLocaleLowerCase()}${name}`;
 }

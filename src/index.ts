@@ -3,6 +3,7 @@ import { program } from 'commander';
 import pkg from '../package.json'
 import { generateTypescript } from './generate';
 import { initConfig } from './utils/config';
+
 /**
  * @description 生成入口
  * @author Wynne

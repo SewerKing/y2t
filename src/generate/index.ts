@@ -1,7 +1,15 @@
-import { initConfig, existConfig } from '../utils/config'
 import inquirer from 'inquirer'
-import { clg } from '../utils/console';
-import { Login } from '../yapi/login';
+import { Login } from '@/yapi/login';
+import { clg } from '@/utils/console';
+import { getApiList } from '@/yapi/api';
+import { getGroupId } from '@/yapi/group';
+import { generateDir } from '@/utils/file';
+import { getModular } from '@/yapi/modular';
+import { getProjectId } from '@/yapi/project';
+import { generateInterface } from './interface';
+import { generateDeclaration } from '@/generate/declaration';
+import { initConfig, existConfig, getConfig } from '@/utils/config'
+import path from 'path';
 
 /**
  * @description 生成typescript文档
@@ -29,4 +37,34 @@ export async function generateTypescript() {
   }
   // 登录
   await Login();
+  // 选择分组
+  const groupId = await getGroupId();
+  // 选择项目
+  const { projectId, projectName } = await getProjectId(groupId);
+  // 选择模块
+  const modulars = await getModular(projectId);
+  const apiInfos: IApiInfoList[] = []
+  clg('yellow', '> yapi接口信息拉取中...');
+  // 批量拉取接口信息
+  for (const item of modulars) {
+    apiInfos.push({
+      list: await getApiList(item.modularId),
+      modularId: item.modularId,
+      basePath: item.basePath
+    })
+  }
+  clg('yellow', '> yapi接口信息拉取成功');
+  clg('yellow', '> 正在生成接口文件...');
+  const config = getConfig();
+  // 创建输出文件夹
+  const outdir = path.resolve(config.outDir)
+  generateDir(outdir)
+  // 生成声明文件
+  for (const item of apiInfos) {
+    // 生成声明文件
+    generateDeclaration(item.list, projectName, item.modularId)
+    // 生成接口文件
+    generateInterface(item.list, projectName, projectId, item.basePath, item.modularId)
+  }
+  clg('green', '> 接口生成成功');
 }

@@ -21,12 +21,16 @@ interface IConfig {
   // 项目跟请求方法映射
   projectMapping: { [key: number]: IProjectMapping },
   // 请求文件路径
-  requestFilePath: string
+  requestFilePath: string,
+  // 忽略ts校验
+  tsIgnore: boolean,
+  // 忽略eslint
+  esLintIgnore: boolean
 }
 
 // 列表信息
 interface IListItem {
   name: string,
-  id: string
+  id: number
   basepath: string,
 }

@@ -6,7 +6,7 @@ module.exports = {
   // Yapi网址链接
   originUrl: 'https://yapi.xxx.cn/',
   // 请求声明模块
-  dtsModule: 'import { AxiosPromise as RequestPromise , AxiosRequestConfig as RequestConfig } from "axios";',
+  fetchModule: 'import { AxiosPromise as RequestPromise , AxiosRequestConfig as RequestConfig } from "axios";',
   // 输出目录
   outDir: './src/apis',
   // 项目跟请求方法映射
@@ -21,5 +21,9 @@ module.exports = {
     },
   },
   // 请求体实例文件路径
-  requestFilePath: 'src/utils/http'
+  requestFilePath: 'src/utils/http',
+  // 忽略ts校验
+  tsIgnore: true,
+  // 忽略eslint
+  esLintIgnore: true
 };

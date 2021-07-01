@@ -1,6 +1,6 @@
-import { clg } from '../utils/console';
-import { getConfig } from '../utils/config';
-import { http, setCookie } from '../utils/http';
+import { clg } from '@/utils/console';
+import { getConfig } from '@/utils/config';
+import { http, setCookie } from '@/utils/http';
 
 export async function Login() {
   const config = getConfig();
@@ -27,6 +27,8 @@ export async function Login() {
         clg('yellow', '> yapi登录失败：', res.data.errmsg)
         reject();
       }
+    }).catch(err => {
+      throw new Error(`yapi登录失败：${err.toString()}`)
     });
   })
 }

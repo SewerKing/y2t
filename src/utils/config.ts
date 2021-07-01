@@ -6,7 +6,7 @@ import { clg } from './console';
 const configPath = path.resolve(process.cwd(), './ygt.config.js');
 
 // 输出配置
-export const getConfig = () => require(configPath);
+export const getConfig = (): IConfig => require(configPath);
 
 /**
  * @description 是否存在配置
@@ -35,7 +35,7 @@ export const initConfig = async () => {
       return;
     }
   }
-  const originPath = path.resolve(__dirname, '../templates/config/ygt.config.js');
+  const originPath = path.resolve(__dirname, '../templates/configTemplate/ygt.config.js');
   fs.copyFileSync(originPath, configPath)
   clg('green', '默认配置已生成，请根据文档进行配置')
 }
