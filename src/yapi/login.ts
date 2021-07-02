@@ -1,9 +1,9 @@
-import { clg } from '@/utils/console';
-import { getConfig } from '@/utils/config';
-import { http, setCookie } from '@/utils/http';
+import { clg } from '@/utils/console'
+import { getConfig } from '@/utils/config'
+import { http, setCookie } from '@/utils/http'
 
-export async function Login() {
-  const config = getConfig();
+export async function Login (): Promise<void> {
+  const config = getConfig()
   return new Promise((resolve, reject) => {
     // 登录
     clg('yellow', '> yapi登录中...')
@@ -22,13 +22,13 @@ export async function Login() {
         // 设置请求通用cookie
         setCookie(result)
         clg('yellow', '> yapi登录成功')
-        resolve(true)
+        resolve()
       } else {
         clg('yellow', '> yapi登录失败：', res.data.errmsg)
-        reject();
+        reject(new Error('yapi登录失败'))
       }
     }).catch(err => {
       throw new Error(`yapi登录失败：${err.toString()}`)
-    });
+    })
   })
 }

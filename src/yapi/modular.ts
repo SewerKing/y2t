@@ -1,5 +1,5 @@
-import { http } from "@/utils/http";
-import inquirer, { QuestionCollection } from "inquirer";
+import { http } from '@/utils/http'
+import inquirer, { QuestionCollection } from 'inquirer'
 
 /**
  * @description 获取模块列表
@@ -7,9 +7,9 @@ import inquirer, { QuestionCollection } from "inquirer";
  * @date 2021-07-02
  * @export
  * @param projectId
- * @return {*} 
+ * @return {*}
  */
-export async function getModularList(projectId: number): Promise<IModularLiatResponse> {
+export async function getModularList (projectId: number): Promise<IModularLiatResponse> {
   return new Promise((resolve) => {
     // 拉取菜单列表
     http.get('/api/project/get', {
@@ -23,15 +23,15 @@ export async function getModularList(projectId: number): Promise<IModularLiatRes
           name: e.name,
           id: e._id
         }
-      }) || [];
+      }) || []
       // 判断数据是否为空
       if (modularList.length === 0) {
-        throw new Error(`当前暂无模块列表`);
+        throw new Error('当前暂无模块列表')
       }
       resolve({
         modularList: modularList,
         basePath: modularReq?.data?.data?.basepath
-      });
+      })
     }).catch(err => {
       throw new Error(`yapi拉取模块列表失败：${err.toString()}`)
     })
@@ -39,24 +39,24 @@ export async function getModularList(projectId: number): Promise<IModularLiatRes
 }
 
 // 获取菜单ID
-export async function getModular(projectId: number): Promise<IModularResponse[]> {
+export async function getModular (projectId: number): Promise<IModularResponse[]> {
   return new Promise(async (resolve) => {
-    const modularList = await getModularList(projectId);
+    const modularList = await getModularList(projectId)
     // 选择菜单
     const promptList: QuestionCollection = [{
-      type: "checkbox",
+      type: 'checkbox',
       message: '请选择要生成的模块:',
       name: 'modularNames',
       choices: modularList.modularList.map(e => e.name),
       pageSize: 100
-    }];
-    const { modularNames } = await inquirer.prompt(promptList);
+    }]
+    const { modularNames } = await inquirer.prompt(promptList)
     // 获取选择的模块
-    const modulars = modularList.modularList.filter(e => modularNames.includes(e.name));
+    const modulars = modularList.modularList.filter(e => modularNames.includes(e.name))
     if (!modulars) {
-      throw new Error('选择的模块不存在');
+      throw new Error('选择的模块不存在')
     }
-    const result: IModularResponse[] = [];
+    const result: IModularResponse[] = []
     for (const item of modulars) {
       result.push({
         modularId: item.id,
@@ -64,6 +64,6 @@ export async function getModular(projectId: number): Promise<IModularResponse[]>
         basePath: modularList.basePath
       })
     }
-    resolve(result);
+    resolve(result)
   })
 }

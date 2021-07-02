@@ -1,26 +1,26 @@
 import inquirer from 'inquirer'
-import { Login } from '@/yapi/login';
-import { clg } from '@/utils/console';
-import { getApiList } from '@/yapi/api';
-import { getGroupId } from '@/yapi/group';
-import { generateDir } from '@/utils/file';
-import { getModular } from '@/yapi/modular';
-import { getProjectId } from '@/yapi/project';
-import { generateInterface } from './interface';
-import { generateDeclaration } from '@/generate/declaration';
+import { Login } from '@/yapi/login'
+import { clg } from '@/utils/console'
+import { getApiList } from '@/yapi/api'
+import { getGroupId } from '@/yapi/group'
+import { generateDir } from '@/utils/file'
+import { getModular } from '@/yapi/modular'
+import { getProjectId } from '@/yapi/project'
+import { generateInterface } from './interface'
+import { generateDeclaration } from '@/generate/declaration'
 import { initConfig, existConfig, getConfig } from '@/utils/config'
-import path from 'path';
-import { initAxios } from '@/utils/http';
-import { updateDB } from '@/utils/nedb';
+import path from 'path'
+import { initAxios } from '@/utils/http'
+import { updateDB } from '@/utils/nedb'
 
 /**
  * @description 生成typescript文档
  * @author Wynne
  * @date 2021-06-25
  * @export
- * @return {*} 
+ * @return {*}
  */
-export async function generateTypescript() {
+export async function generateTypescript (): Promise<void> {
   // 判断是否有配置文件
   if (!existConfig()) {
     const res = await inquirer.prompt({
@@ -31,24 +31,24 @@ export async function generateTypescript() {
     })
     if (res.isGenerate) {
       initConfig()
-      return;
+      return
     } else {
       clg('red', '已取消生成默认配置，请完善配置后重试')
-      return;
+      return
     }
   }
   // 初始化请求方法
-  initAxios();
+  initAxios()
   // 登录
-  await Login();
+  await Login()
   // 选择分组
-  const groupId = await getGroupId();
+  const groupId = await getGroupId()
   // 选择项目
-  const { projectId, projectName } = await getProjectId(groupId);
+  const { projectId, projectName } = await getProjectId(groupId)
   // 选择模块
-  const modulars = await getModular(projectId);
+  const modulars = await getModular(projectId)
   const apiInfos: IApiInfoList[] = []
-  clg('yellow', '> yapi接口信息拉取中...');
+  clg('yellow', '> yapi接口信息拉取中...')
   // 批量拉取接口信息
   for (const item of modulars) {
     apiInfos.push({
@@ -58,9 +58,9 @@ export async function generateTypescript() {
       basePath: item.basePath
     })
   }
-  clg('yellow', '> yapi接口信息拉取成功');
-  clg('yellow', '> 正在生成接口文件...');
-  const config = getConfig();
+  clg('yellow', '> yapi接口信息拉取成功')
+  clg('yellow', '> 正在生成接口文件...')
+  const config = getConfig()
   // 创建输出文件夹
   const outdir = path.resolve(config.outDir)
   generateDir(outdir)
@@ -72,6 +72,6 @@ export async function generateTypescript() {
     generateInterface(item.list, projectName, projectId, item.basePath, item.modularId)
   }
   // 更新缓存
-  updateDB(apiInfos, projectName, projectId);
-  clg('yellow', '> 接口生成成功');
+  updateDB(apiInfos, projectName, projectId)
+  clg('yellow', '> 接口生成成功')
 }

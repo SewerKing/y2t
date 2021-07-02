@@ -1,9 +1,9 @@
-import fs from 'fs';
-import path from 'path';
-import { getConfig } from '@/utils/config';
-import { generateDir } from '@/utils/file';
-import { formatCode } from "@/utils/prettify";
-import { getBodyPath, getInterfaceName, getNamespace, getQueryPath, getResponesPath, underlineToHump } from '@/utils/name';
+import fs from 'fs'
+import path from 'path'
+import { getConfig } from '@/utils/config'
+import { generateDir } from '@/utils/file'
+import { formatCode } from '@/utils/prettify'
+import { getBodyPath, getInterfaceName, getNamespace, getQueryPath, getResponesPath, underlineToHump } from '@/utils/name'
 
 /**
  * @description 生成API请求方法
@@ -15,16 +15,16 @@ import { getBodyPath, getInterfaceName, getNamespace, getQueryPath, getResponesP
  * @param projectId
  * @param basePath
  * @param modularId
- * @return {*} 
+ * @return {*}
  */
-export function generateInterface(apis: IApiInfoResponse[], projectName: string, projectId: number, basePath: string, modularId: number) {
-  const config = getConfig();
-  const apiTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/api.tpl')).toString();
+export function generateInterface (apis: IApiInfoResponse[], projectName: string, projectId: number, basePath: string, modularId: number) {
+  const config = getConfig()
+  const apiTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/api.tpl')).toString()
   if (!(projectId in config.projectMapping)) {
     throw new Error(`生成失败，项目：${projectName}，ID：${projectId} 未配置 projectMapping`)
   }
 
-  const apiList = [];
+  const apiList = []
   // 标记module的起始，方便后续更新
   if (apis && apis.length > 0) {
     apiList.push(`//#region interface:${modularId}`)
@@ -46,13 +46,13 @@ export function generateInterface(apis: IApiInfoResponse[], projectName: string,
   // api文件的完整文件名
   const apiFileName = path.resolve(`${apiFilePath}/index.ts`)
   // api文件内容
-  let apiContent = '';
+  let apiContent = ''
   // 是否已经存在声明文件
   if (fs.existsSync(apiFileName)) {
     // 源文件
-    let originContent = fs.readFileSync(apiFileName).toString();
+    let originContent = fs.readFileSync(apiFileName).toString()
     // 判断requestFilePath是否变更
-    const requestFilePathReg = /import\s\*\sas\sdefs\sfrom\s["|'|`][\S]*["|'|`]/;
+    const requestFilePathReg = /import\s\*\sas\sdefs\sfrom\s["|'|`][\S]*["|'|`]/
     const requestScript = originContent.match(requestFilePathReg)?.[0] ?? ''
     const newRequestScript = `import * as defs from '${config.requestFilePath}';`
     if (requestScript && requestScript !== newRequestScript) {
@@ -74,9 +74,9 @@ export function generateInterface(apis: IApiInfoResponse[], projectName: string,
     }
   } else {
     // 统一返回体wrapper
-    const wrapper = config.projectMapping[projectId].wrapper;
+    const wrapper = config.projectMapping[projectId].wrapper
     // 请求方法文件路径
-    const requestFilePath = config.requestFilePath;
+    const requestFilePath = config.requestFilePath
     // 配置 请求体
     // 校验忽略文本
     const ignore = `${config.tsIgnore ? '// @ts-ignore\n' : ''}${config.esLintIgnore ? '/* eslint-disable */\n' : ''}`
@@ -92,42 +92,42 @@ export function generateInterface(apis: IApiInfoResponse[], projectName: string,
     apiContent += apiList.join('\r\n')
   }
   // 生成输出文件夹
-  generateDir(apiFilePath);
-  fs.writeFileSync(apiFileName, formatCode(apiContent));
+  generateDir(apiFilePath)
+  fs.writeFileSync(apiFileName, formatCode(apiContent))
 }
 
 // 生成Api请求方法
-function generateApiFunction(api: IApiInfoResponse, projectName: string, projectId: number) {
-  const config = getConfig();
-  const apiBodyTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/body.tpl')).toString();
+function generateApiFunction (api: IApiInfoResponse, projectName: string, projectId: number) {
+  const config = getConfig()
+  const apiBodyTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/body.tpl')).toString()
   // 获取命名空间名
-  const namespaceName = getNamespace(projectName);
+  const namespaceName = getNamespace(projectName)
   // 是否需要body
   const isNeedBody = ['post', 'put'].includes(api.method.toLocaleLowerCase())
   // 接口描述
-  const description = api.title;
+  const description = api.title
   // 接口名字
-  const interfaceName = getInterfaceName(api);
+  const interfaceName = getInterfaceName(api)
   // URL参数
-  const urlParams = `${getUrlQuery(api.detail.urlParams)}\n`;
+  const urlParams = `${getUrlQuery(api.detail.urlParams)}\n`
   // 参数Query
-  const query = api.detail.query && api.detail.query.length > 0 ? `query: ${getQueryPath(namespaceName, api)},\n` : '';
+  const query = api.detail.query && api.detail.query.length > 0 ? `query: ${getQueryPath(namespaceName, api)},\n` : ''
   // 参数Body
-  const body = isNeedBody && api.detail.body ? `body: ${getBodyPath(namespaceName, api)},\n` : '';
+  const body = isNeedBody && api.detail.body ? `body: ${getBodyPath(namespaceName, api)},\n` : ''
   // 返回的类型
   const response = api.detail.response
     ? config.projectMapping[projectId].wrapper
       ? `IResponseWrapper<${getResponesPath(namespaceName, api)},>`
       : `${getResponesPath(namespaceName, api)},`
-    : 'any';
+    : 'any'
   // 映射的方法名
-  const mapping = config.projectMapping[projectId].exportName;
+  const mapping = config.projectMapping[projectId].exportName
   // 请求方法
-  const method = api.method.toLocaleLowerCase();
+  const method = api.method.toLocaleLowerCase()
   // 请求URL
-  const url = api.path.replace(/{(.*?)}/g, '${$1}');
+  const url = api.path.replace(/{(.*?)}/g, '${$1}')
   // 请求Body
-  const bodyParam = isNeedBody ? api.detail.body ? 'body,' : 'undefined,' : '';
+  const bodyParam = isNeedBody ? api.detail.body ? 'body,' : 'undefined,' : ''
   // 请求Query
   const queryParam = api.detail.query && api.detail.query.length > 0 ? 'params: query' : ''
   const bodyContent = apiBodyTemplate.replace('{Description}', description)
@@ -140,11 +140,11 @@ function generateApiFunction(api: IApiInfoResponse, projectName: string, project
     .replace('{Method}', method)
     .replace('{Url}', url)
     .replace('{BodyParam}', bodyParam)
-    .replace('{QueryParam}', queryParam);
-  return bodyContent;
+    .replace('{QueryParam}', queryParam)
+  return bodyContent
 }
 
 // 获取路径参数
-function getUrlQuery(params: IApiDetailParam[]) {
-  return params && params.length > 0 ? params.map(e => `${e.name}: ${e.type}`).join(',') + ',' : '';
+function getUrlQuery (params: IApiDetailParam[]) {
+  return params && params.length > 0 ? params.map(e => `${e.name}: ${e.type}`).join(',') + ',' : ''
 }

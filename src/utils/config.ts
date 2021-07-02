@@ -1,16 +1,16 @@
 import path from 'path'
-import fs from 'fs';
+import fs from 'fs'
 import inquirer from 'inquirer'
-import { clg } from './console';
-let configRootPath = process.cwd();
+import { clg } from './console'
+let configRootPath = process.cwd()
 
 /**
  * @description 获取配置文件路径
  * @author Wynne
  * @date 2021-07-02
  */
-function configPath() {
-  return path.resolve(configRootPath, './ygt.config.js');
+function configPath () {
+  return path.resolve(configRootPath, './ygt.config.js')
 }
 
 /**
@@ -20,26 +20,26 @@ function configPath() {
  * @export
  * @param root
  */
-export function setConfigRootPath(root: string) {
+export function setConfigRootPath (root: string): void {
   clg('red', root)
   configRootPath = root
-};
+}
 
 /**
  * @description 获取配置
  * @author Wynne
  * @date 2021-07-02
  * @export
- * @return {*} 
+ * @return {*}
  */
-export function getConfig(): IConfig { return require(configPath()); }
+export function getConfig (): IConfig { return require(configPath()) }
 
 /**
  * @description 是否存在配置
  * @author Wynne
  * @date 2021-06-25
  */
-export const existConfig = () => {
+export const existConfig = (): boolean => {
   clg('blue', configPath())
   return fs.existsSync(configPath())
 }
@@ -49,7 +49,7 @@ export const existConfig = () => {
  * @author Wynne
  * @date 2021-06-25
  */
-export const initConfig = async () => {
+export const initConfig = async (): Promise<void> => {
   if (existConfig()) {
     const res = await inquirer.prompt({
       type: 'confirm',
@@ -59,10 +59,10 @@ export const initConfig = async () => {
     })
     if (!res.isOverlap) {
       clg('red', '已取消生成配置')
-      return;
+      return
     }
   }
-  generateDefaultConfig();
+  generateDefaultConfig()
   clg('green', '默认配置已生成，请根据文档进行配置')
 }
 
@@ -71,7 +71,7 @@ export const initConfig = async () => {
  * @author Wynne
  * @date 2021-06-25
  */
-export const generateDefaultConfig = () => {
-  const originPath = path.resolve(__dirname, '../templates/configTemplate/ygt.config.js');
+export const generateDefaultConfig = (): void => {
+  const originPath = path.resolve(__dirname, '../templates/configTemplate/ygt.config.js')
   fs.copyFileSync(originPath, configPath())
 }

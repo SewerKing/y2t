@@ -1,6 +1,5 @@
-import axios from 'axios';
-import { getConfig } from './config';
-
+import axios from 'axios'
+import { getConfig } from './config'
 
 /**
  * @description 初始化请求default，防止修改config文件目录
@@ -8,9 +7,9 @@ import { getConfig } from './config';
  * @date 2021-07-02
  * @export
  */
-export function initAxios() {
-  const config = getConfig();
-  axios.defaults.baseURL = config.originUrl;
+export function initAxios (): void {
+  const config = getConfig()
+  axios.defaults.baseURL = config.originUrl
 }
 
 /**
@@ -20,14 +19,14 @@ export function initAxios() {
  * @export
  * @param cookie
  */
-export function setCookie(cookie: string) {
+export function setCookie (cookie: string): void {
   axios.interceptors.request.use((req) => {
     req.headers = {
       ...req.headers,
       cookie: cookie
     }
-    return req;
+    return req
   })
 }
 
-export const http = axios;
+export const http = axios

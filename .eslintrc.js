@@ -1,21 +1,23 @@
 module.exports = {
-  root: true,
   env: {
+    es2021: true,
     node: true
   },
-  parser: '@typescript-eslint/parser',
   extends: [
+    'standard',
     'plugin:@typescript-eslint/recommended'
   ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: __dirname,
-    ecmaVersion: 2019,
-    sourceType: 'module',
-    createDefaultProgram: true,
+    ecmaVersion: 12,
+    sourceType: 'module'
   },
+  plugins: [
+    '@typescript-eslint'
+  ],
   rules: {
-    "@typescript-eslint/explicit-module-boundary-types": 'off',
-    "@typescript-eslint/no-explicit-any": 'off'
+    'no-async-promise-executor': 'off',
+    'no-template-curly-in-string': 'off',
+    'no-use-before-define': 'off'
   }
 }

@@ -7,14 +7,14 @@ import { http } from './http'
  * @export
  * @param name
  * @param [isBigHump=false] 是否大驼峰
- * @return {*} 
+ * @return {*}
  */
-export function underlineToHump(name: string, isBigHump = false) {
+export function underlineToHump (name: string, isBigHump = false): string {
   let hump = name.replace(/[\_|\-|\s](\w)/g, function (all, letter) {
-    return letter.toUpperCase();
-  });
-  hump = (isBigHump ? hump.charAt(0).toLocaleUpperCase() : hump.charAt(0).toLocaleLowerCase()) + hump.substr(1);
-  return hump;
+    return letter.toUpperCase()
+  })
+  hump = (isBigHump ? hump.charAt(0).toLocaleUpperCase() : hump.charAt(0).toLocaleLowerCase()) + hump.substr(1)
+  return hump
 }
 
 /**
@@ -23,10 +23,10 @@ export function underlineToHump(name: string, isBigHump = false) {
  * @date 2021-06-25
  * @export
  * @param text 翻译的文本
- * @return {*} 
+ * @return {*}
  */
-export function zhCN2EN(text: string): Promise<string> {
-  return new Promise((resolve, reject) => {
+export function zhCN2EN (text: string): Promise<string> {
+  return new Promise((resolve) => {
     if (/[\u4e00-\u9fa5]/.test(text)) {
       const url = `http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i=${encodeURIComponent(
         text
@@ -34,11 +34,11 @@ export function zhCN2EN(text: string): Promise<string> {
       http
         .get(url)
         .then((res) => {
-          const text = res.data.translateResult[0][0].tgt.replace(/\s+/g, "");
+          const text = res.data.translateResult[0][0].tgt.replace(/\s+/g, '')
           resolve(underlineToHump(text, true))
         })
-        .catch((err) => {
-          throw new Error("有道翻译接口请求失败")
+        .catch(() => {
+          throw new Error('有道翻译接口请求失败')
         })
     } else {
       resolve(underlineToHump(text, true))
@@ -53,14 +53,13 @@ export function zhCN2EN(text: string): Promise<string> {
  * @export
  * @param api
  * @param [isBigHump=true]
- * @return {*} 
+ * @return {*}
  */
-export function pathToHump(api: IApiInfoResponse, isBigHump = true) {
+export function pathToHump (api: IApiInfoResponse, isBigHump = true): string {
   let name = api.path.replace(/[{|}]/g, '').replace(/\//g, '_')
-  name = underlineToHump(name, isBigHump);
+  name = underlineToHump(name, isBigHump)
   return name
 }
-
 
 /**
  * @description 获取接口的Response名字
@@ -68,14 +67,13 @@ export function pathToHump(api: IApiInfoResponse, isBigHump = true) {
  * @date 2021-07-01
  * @export
  * @param api
- * @return {*} 
+ * @return {*}
  */
-export function getResponseName(api: IApiInfoResponse) {
-  const name = pathToHump(api);
+export function getResponseName (api: IApiInfoResponse): string {
+  const name = pathToHump(api)
   const method = api.method.slice(0, 1).toUpperCase() + api.method.slice(1).toLocaleLowerCase()
-  return `I${method}${name}Response`;
+  return `I${method}${name}Response`
 }
-
 
 /**
  * @description 获取接口的Params名字
@@ -83,12 +81,12 @@ export function getResponseName(api: IApiInfoResponse) {
  * @date 2021-07-01
  * @export
  * @param api
- * @return {*} 
+ * @return {*}
  */
-export function getRequestName(api: IApiInfoResponse) {
-  const name = pathToHump(api);
+export function getRequestName (api: IApiInfoResponse): string {
+  const name = pathToHump(api)
   const method = api.method.slice(0, 1).toUpperCase() + api.method.slice(1).toLocaleLowerCase()
-  return `I${method}${name}Request`;
+  return `I${method}${name}Request`
 }
 
 /**
@@ -97,12 +95,12 @@ export function getRequestName(api: IApiInfoResponse) {
  * @date 2021-07-01
  * @export
  * @param api
- * @return {*} 
+ * @return {*}
  */
-export function getQueryName(api: IApiInfoResponse) {
-  const name = pathToHump(api);
+export function getQueryName (api: IApiInfoResponse): string {
+  const name = pathToHump(api)
   const method = api.method.slice(0, 1).toUpperCase() + api.method.slice(1).toLocaleLowerCase()
-  return `I${method}${name}Query`;
+  return `I${method}${name}Query`
 }
 
 /**
@@ -110,9 +108,9 @@ export function getQueryName(api: IApiInfoResponse) {
  * @author Wynne
  * @date 2021-07-01
  * @export
- * @return {*} 
+ * @return {*}
  */
-export function getNamespace(projectName: string) {
+export function getNamespace (projectName: string): string {
   return underlineToHump(projectName, true)
 }
 
@@ -121,22 +119,22 @@ export function getNamespace(projectName: string) {
  * @author Wynne
  * @date 2021-07-01
  * @export
- * @return {*} 
+ * @return {*}
  */
-export function getQueryPath(namespace: string, api: IApiInfoResponse) {
+export function getQueryPath (namespace: string, api: IApiInfoResponse): string {
   return `${namespace}.Request.${getQueryName(api)}`
 }
 
-/** 
+/**
  * @description 获取Body声明文件路径
  * @author Wynne
  * @date 2021-07-01
  * @export
  * @param namespace
  * @param api
- * @return {*} 
+ * @return {*}
  */
-export function getBodyPath(namespace: string, api: IApiInfoResponse) {
+export function getBodyPath (namespace: string, api: IApiInfoResponse): string {
   return `${namespace}.Request.${getRequestName(api)}`
 }
 
@@ -147,9 +145,9 @@ export function getBodyPath(namespace: string, api: IApiInfoResponse) {
  * @export
  * @param namespace
  * @param api
- * @return {*} 
+ * @return {*}
  */
-export function getResponesPath(namespace: string, api: IApiInfoResponse) {
+export function getResponesPath (namespace: string, api: IApiInfoResponse): string {
   return `${namespace}.Response.${getResponseName(api)}`
 }
 
@@ -159,9 +157,9 @@ export function getResponesPath(namespace: string, api: IApiInfoResponse) {
  * @date 2021-07-01
  * @export
  * @param api
- * @return {*} 
+ * @return {*}
  */
-export function getInterfaceName(api: IApiInfoResponse) {
-  const name = pathToHump(api);
-  return `${api.method.toLocaleLowerCase()}${name}`;
+export function getInterfaceName (api: IApiInfoResponse): string {
+  const name = pathToHump(api)
+  return `${api.method.toLocaleLowerCase()}${name}`
 }

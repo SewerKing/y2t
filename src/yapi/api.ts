@@ -1,7 +1,7 @@
-import { http } from "@/utils/http";
+import { http } from '@/utils/http'
 
 // 获取api列表
-export async function getApiList(modularId: number): Promise<IApiInfoResponse[]> {
+export async function getApiList (modularId: number): Promise<IApiInfoResponse[]> {
   return new Promise((resolve) => {
     http.get('/api/interface/list_cat', {
       params: {
@@ -10,9 +10,9 @@ export async function getApiList(modularId: number): Promise<IApiInfoResponse[]>
         catid: modularId
       }
     }).then(async apiReq => {
-      const apiList: IApiInfoResponse[] = [];
+      const apiList: IApiInfoResponse[] = []
       for (const item of apiReq?.data?.data?.list ?? []) {
-        const detail = await getApiDetail(item._id);
+        const detail = await getApiDetail(item._id)
         apiList.push({
           id: item._id,
           title: item.title,
@@ -21,33 +21,33 @@ export async function getApiList(modularId: number): Promise<IApiInfoResponse[]>
           detail: detail
         })
       }
-      resolve(apiList);
+      resolve(apiList)
     }).catch(err => {
       throw new Error(`yapi拉取接口列表失败：${err.toString()}`)
-    });
+    })
   })
 }
 
 // 获取api详情
-export async function getApiDetail(apiId: number): Promise<IApiDetail> {
+export async function getApiDetail (apiId: number): Promise<IApiDetail> {
   return new Promise((resolve) => {
     http.get('/api/interface/get', {
       params: {
         id: apiId
       }
     }).then(async apiReq => {
-      const apiDetail = apiReq.data.data;
-      let body = undefined;
-      let response = undefined;
+      const apiDetail = apiReq.data.data
+      let body
+      let response
       // 解析Response
       try {
-        response = apiDetail?.res_body ? JSON.parse(apiDetail.res_body) : undefined;
+        response = apiDetail?.res_body ? JSON.parse(apiDetail.res_body) : undefined
       } catch (err) {
         throw new Error(`\r\nResponse解析失败\r\n接口：${apiReq.data?.data?.path}\r\n请检查Yapi是否规范！\r\n`)
       }
       // 解析Body
       try {
-        body = apiDetail?.req_body_other ? JSON.parse(apiDetail.req_body_other) : undefined;
+        body = apiDetail?.req_body_other ? JSON.parse(apiDetail.req_body_other) : undefined
       } catch (err) {
         throw new Error(`\r\nBody解析失败\r\n接口：${apiReq.data?.data?.path}\r\n请检查Yapi是否规范！\r\n`)
       }
@@ -67,7 +67,7 @@ export async function getApiDetail(apiId: number): Promise<IApiDetail> {
             name: e.name,
             type: 'string|number',
             desc: e.desc,
-            required: e.required === '1' ? true : false
+            required: e.required === '1'
           }
         }),
         // 请求体
@@ -83,6 +83,6 @@ export async function getApiDetail(apiId: number): Promise<IApiDetail> {
       })
     }).catch(err => {
       throw new Error(`yapi拉取接口详情失败：${err.toString()}`)
-    });
+    })
   })
 }

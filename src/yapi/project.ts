@@ -1,6 +1,6 @@
-import { http } from "@/utils/http";
-import inquirer, { QuestionCollection } from "inquirer";
-import { zhCN2EN } from "@/utils/name";
+import { http } from '@/utils/http'
+import inquirer, { QuestionCollection } from 'inquirer'
+import { zhCN2EN } from '@/utils/name'
 
 /**
  * @description 获取项目列表
@@ -8,9 +8,9 @@ import { zhCN2EN } from "@/utils/name";
  * @date 2021-07-02
  * @export
  * @param groupId
- * @return {*} 
+ * @return {*}
  */
-export async function getProjectList(groupId: number): Promise<IListItem[]> {
+export async function getProjectList (groupId: number): Promise<IListItem[]> {
   return new Promise((resolve) => {
     // 拉取项目列表
     http.get('/api/project/list', {
@@ -26,14 +26,14 @@ export async function getProjectList(groupId: number): Promise<IListItem[]> {
           name: e.name,
           id: e._id
         }
-      }) || [];
+      }) || []
       // 判断数据是否为空
       if (projectList.length === 0) {
-        throw new Error(`当前暂无项目列表`);
+        throw new Error('当前暂无项目列表')
       }
       resolve(projectList)
     }).catch(err => {
-      throw new Error(`yapi拉取项目列表失败：${err}`);
+      throw new Error(`yapi拉取项目列表失败：${err}`)
     })
   })
 }
@@ -44,11 +44,11 @@ export async function getProjectList(groupId: number): Promise<IListItem[]> {
  * @date 2021-07-02
  * @export
  * @param groupId
- * @return {*} 
+ * @return {*}
  */
-export async function getProjectId(groupId: number): Promise<IProjectResponse> {
+export async function getProjectId (groupId: number): Promise<IProjectResponse> {
   return new Promise(async (resolve) => {
-    const projectList = await getProjectList(groupId);
+    const projectList = await getProjectList(groupId)
     // 选择分组
     const promptList: QuestionCollection = [{
       type: 'list',
@@ -56,17 +56,17 @@ export async function getProjectId(groupId: number): Promise<IProjectResponse> {
       name: 'name',
       choices: projectList.map(e => e.name),
       pageSize: 20
-    }];
-    const projectName = await inquirer.prompt(promptList);
-    const project = projectList.find(e => e.name === projectName.name);
+    }]
+    const projectName = await inquirer.prompt(promptList)
+    const project = projectList.find(e => e.name === projectName.name)
     // 选择的项目ID
-    const projectId = project?.id;
+    const projectId = project?.id
     if (!projectId) {
-      throw new Error('选择的项目不存在');
+      throw new Error('选择的项目不存在')
     }
     resolve({
       projectId: projectId,
       projectName: await zhCN2EN(projectName.name)
-    });
+    })
   })
 }

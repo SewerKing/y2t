@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { program } from "commander";
+import { program } from 'commander'
 import pkg from '../package.json'
-import { generateTypescript } from './generate';
-import { diffInterface } from './generate/diff';
-import { initConfig } from './utils/config';
+import { generateTypescript } from './generate'
+import { diffInterface } from './generate/diff'
+import { initConfig } from './utils/config'
 import { removeDBCache } from './utils/nedb';
 
 /**
@@ -11,7 +11,7 @@ import { removeDBCache } from './utils/nedb';
  * @author Wynne
  * @date 2021-06-25
  */
-(async function entry() {
+(async function entry () {
   // 配置执行参数
   program
     .version(pkg.version, '-v, --version', '获取当前版本')
@@ -21,7 +21,7 @@ import { removeDBCache } from './utils/nedb';
     .option('-d, --diff', '当前项目Diff')
 
   program.on('option:generate', () => {
-    generateTypescript();
+    generateTypescript()
   })
 
   program.on('option:init', () => {
@@ -36,5 +36,5 @@ import { removeDBCache } from './utils/nedb';
     removeDBCache()
   })
 
-  program.parse(process.argv);
+  program.parse(process.argv)
 })()
