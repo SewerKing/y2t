@@ -1,12 +1,12 @@
-import { Login } from '@/yapi/login'
-import { getGroupList } from '@/yapi/group'
-import { getProjectList } from '@/yapi/project'
-import { getModularList } from '@/yapi/modular'
-import { generateInterface } from '@/generate/interface'
-import { generateDeclaration } from '@/generate/declaration'
-import { getUpdateList, generateUpdateInterface } from '@/generate/diff'
-import { setConfigRootPath, generateDefaultConfig, existConfig } from '@/utils/config'
-import { initAxios } from '@/utils/http'
+import { Login } from './yapi/login'
+import { getGroupList } from './yapi/group'
+import { getProjectList } from './yapi/project'
+import { getModularList } from './yapi/modular'
+import { generateInterface } from './generate/interface'
+import { generateDeclaration } from './generate/declaration'
+import { getUpdateList, generateUpdateInterface } from './generate/diff'
+import { setConfigRootPath, generateDefaultConfig, existConfig } from './utils/config'
+import { initAxios } from './utils/http'
 
 export {
   // 设置配置文件根路径
