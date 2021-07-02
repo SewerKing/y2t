@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "ts-node --files -r tsconfig-paths/register ./src/index.ts -g",
-    "diff": "ts-node --files -r tsconfig-paths/register ./src/index.ts -d"
+    "diff": "ts-node --files -r tsconfig-paths/register ./src/index.ts -d",
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -38,7 +39,7 @@
     "prettier": "^2.3.2",
     "rollup": "^2.52.7",
     "rollup-plugin-cleandir": "^1.0.0",
-    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-preserve-shebangs": "^0.2.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",

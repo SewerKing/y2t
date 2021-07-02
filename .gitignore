@@ -1,4 +1,5 @@
 node_modules
 src/apis
 src/utils/data
+/lib
 ./ygt.config.js
