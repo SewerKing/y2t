@@ -51,6 +51,7 @@ export async function getModular(projectId: number): Promise<IModularResponse[]>
       pageSize: 100
     }];
     const { modularNames } = await inquirer.prompt(promptList);
+    // 获取选择的模块
     const modulars = modularList.modularList.filter(e => modularNames.includes(e.name));
     if (!modulars) {
       throw new Error('选择的模块不存在');

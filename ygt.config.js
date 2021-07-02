@@ -18,7 +18,7 @@ module.exports = {
     },
   },
   // 请求体实例文件路径
-  requestFilePath: '../../utils/http',
+  requestFilePath: 'src/utils/http',
   // 忽略ts校验
   tsIgnore: true,
   // 忽略eslint

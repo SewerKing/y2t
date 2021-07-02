@@ -61,3 +61,10 @@ interface IApiCache {
   // 当前项目路径
   cwd?: string;
 }
+
+// 接口更新返回参数
+interface IDiffUpdateResponse {
+  list: IApiInfoList[],
+  projectName: string,
+  projectId: number
+}
