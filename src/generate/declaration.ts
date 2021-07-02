@@ -31,6 +31,7 @@ export async function generateDeclaration(apis: IApiInfoResponse[], projectName:
   // 标记module的起始，方便后续更新
   requestContent.push(`//#region request:${modularId}`)
   responseContent.push(`//#region response:${modularId}`)
+  // 遍历接口拼接声明文件内容
   for (const api of apis) {
     try {
       // 获取response声明文件
@@ -52,7 +53,7 @@ export async function generateDeclaration(apis: IApiInfoResponse[], projectName:
         requestContent.push(queryDts)
       }
     } catch (err) {
-      console.error(`接口声明：${api.path} 生成失败`, err)
+      throw new Error(`接口声明：${api.path} 生成失败:${err.toString}`)
     }
   }
   // 标记module的结束，方便后续更新

@@ -10,6 +10,7 @@ import { generateInterface } from './interface';
 import { generateDeclaration } from '@/generate/declaration';
 import { initConfig, existConfig, getConfig } from '@/utils/config'
 import path from 'path';
+import { initAxios } from '@/utils/http';
 
 /**
  * @description 生成typescript文档
@@ -35,6 +36,7 @@ export async function generateTypescript() {
       return;
     }
   }
+  initAxios();
   // 登录
   await Login();
   // 选择分组
@@ -66,5 +68,5 @@ export async function generateTypescript() {
     // 生成接口文件
     generateInterface(item.list, projectName, projectId, item.basePath, item.modularId)
   }
-  clg('green', '> 接口生成成功');
+  clg('yellow', '> 接口生成成功');
 }

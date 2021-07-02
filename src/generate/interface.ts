@@ -4,7 +4,6 @@ import { getConfig } from '@/utils/config';
 import { generateDir } from '@/utils/file';
 import { formatCode } from '@/utils/prettify';
 import { getBodyPath, getInterfaceName, getNamespace, getQueryPath, getResponesPath, underlineToHump } from '@/utils/name';
-const config = getConfig();
 
 /**
  * @description 生成API请求方法
@@ -19,6 +18,7 @@ const config = getConfig();
  * @return {*} 
  */
 export function generateInterface(apis: IApiInfoResponse[], projectName: string, projectId: number, basePath: string, modularId: number) {
+  const config = getConfig();
   const apiTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/api.tpl')).toString();
   if (!(projectId in config.projectMapping)) {
     throw new Error(`生成失败，项目：${projectName}，ID：${projectId} 未配置 projectMapping`)
@@ -55,7 +55,7 @@ export function generateInterface(apis: IApiInfoResponse[], projectName: string,
     const requestFilePathReg = /import\s\*\sas\sdefs\sfrom\s["|'|`][\S]*["|'|`]/;
     const requestScript = originContent.match(requestFilePathReg)?.[0] ?? ''
     const newRequestScript = `import * as defs from '${config.requestFilePath}';`
-    if (requestScript) {
+    if (requestScript && requestScript !== newRequestScript) {
       originContent = originContent.replace(
         requestFilePathReg,
         newRequestScript
@@ -98,6 +98,7 @@ export function generateInterface(apis: IApiInfoResponse[], projectName: string,
 
 // 生成Api请求方法
 function generateApiFunction(api: IApiInfoResponse, projectName: string, projectId: number) {
+  const config = getConfig();
   const apiBodyTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/body.tpl')).toString();
   // 获取命名空间名
   const namespaceName = getNamespace(projectName);
@@ -108,11 +109,11 @@ function generateApiFunction(api: IApiInfoResponse, projectName: string, project
   // 接口名字
   const interfaceName = getInterfaceName(api);
   // URL参数
-  const urlParams = getUrlQuery(api.detail.urlParams);
+  const urlParams = `${getUrlQuery(api.detail.urlParams)}\n`;
   // 参数Query
-  const query = api.detail.query && api.detail.query.length > 0 ? `query: ${getQueryPath(namespaceName, api)},` : '';
+  const query = api.detail.query && api.detail.query.length > 0 ? `query: ${getQueryPath(namespaceName, api)},\n` : '';
   // 参数Body
-  const body = isNeedBody && api.detail.body ? `body: ${getBodyPath(namespaceName, api)},` : '';
+  const body = isNeedBody && api.detail.body ? `body: ${getBodyPath(namespaceName, api)},\n` : '';
   // 返回的类型
   const response = api.detail.response
     ? config.projectMapping[projectId].wrapper

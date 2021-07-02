@@ -1,8 +1,17 @@
 import axios from 'axios';
 import { getConfig } from './config';
 
-const config = getConfig();
-axios.defaults.baseURL = config.originUrl;
+
+/**
+ * @description 初始化请求default，防止修改config文件目录
+ * @author Wynne
+ * @date 2021-07-02
+ * @export
+ */
+export function initAxios() {
+  const config = getConfig();
+  axios.defaults.baseURL = config.originUrl;
+}
 
 /**
  * @description 设置cookie

@@ -10,6 +10,12 @@ interface IModularResponse {
   basePath: string;
 }
 
+// 模块返回信息
+interface IModularLiatResponse {
+  modularList: IListItem[];
+  basePath: string;
+}
+
 // api信息信息
 interface IApiInfoList {
   list: IApiInfoResponse[];
