@@ -1,8 +1,11 @@
 {
   "name": "yapi2typescript",
   "version": "1.0.0",
-  "description": "> Yapi 生成 Typescript`请求方法`及`声明文件`工具",
-  "main": "index.js",
+  "description": "Yapi 生成 Typescript`请求方法`及`声明文件`工具",
+  "main": "lib/core/index.js",
+  "bin": {
+    "y2t": "lib/index.js"
+  },
   "scripts": {
     "dev": "ts-node --files -r tsconfig-paths/register ./src/index.ts -g",
     "diff": "ts-node --files -r tsconfig-paths/register ./src/index.ts -d"
@@ -20,8 +23,21 @@
     "nedb": "^1.8.0"
   },
   "devDependencies": {
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/inquirer": "^7.3.2",
     "@types/nedb": "^1.8.11",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
+    "eslint": "^7.29.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
+    "rollup": "^2.52.7",
+    "rollup-plugin-cleandir": "^1.0.0",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-preserve-shebangs": "^0.2.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.30.0",
     "tsconfig-paths": "^3.9.0"
   }
 }

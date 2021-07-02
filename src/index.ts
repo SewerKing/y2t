@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { program } from 'commander';
+import { program } from "commander";
 import pkg from '../package.json'
 import { generateTypescript } from './generate';
 import { diffInterface } from './generate/diff';
@@ -21,7 +21,7 @@ import { removeDBCache } from './utils/nedb';
     .option('-d, --diff', '当前项目Diff')
 
   program.on('option:generate', () => {
-    generateTypescript()
+    generateTypescript();
   })
 
   program.on('option:init', () => {
