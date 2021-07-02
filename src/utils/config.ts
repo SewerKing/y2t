@@ -9,7 +9,7 @@ let configRootPath = process.cwd()
  * @author Wynne
  * @date 2021-07-02
  */
-function configPath () {
+function configPath() {
   return path.resolve(configRootPath, './ygt.config.js')
 }
 
@@ -20,8 +20,7 @@ function configPath () {
  * @export
  * @param root
  */
-export function setConfigRootPath (root: string): void {
-  clg('red', root)
+export function setConfigRootPath(root: string): void {
   configRootPath = root
 }
 
@@ -32,7 +31,7 @@ export function setConfigRootPath (root: string): void {
  * @export
  * @return {*}
  */
-export function getConfig (): IConfig { return require(configPath()) }
+export function getConfig(): IConfig { return require(configPath()) }
 
 /**
  * @description 是否存在配置
@@ -40,7 +39,6 @@ export function getConfig (): IConfig { return require(configPath()) }
  * @date 2021-06-25
  */
 export const existConfig = (): boolean => {
-  clg('blue', configPath())
   return fs.existsSync(configPath())
 }
 
