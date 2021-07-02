@@ -29,7 +29,7 @@ export async function getApiList(modularId: number): Promise<IApiInfoResponse[]>
 }
 
 // 获取api详情
-async function getApiDetail(apiId: number): Promise<IApiDetail> {
+export async function getApiDetail(apiId: number): Promise<IApiDetail> {
   return new Promise((resolve) => {
     http.get('/api/interface/get', {
       params: {

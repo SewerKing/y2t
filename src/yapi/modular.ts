@@ -59,6 +59,7 @@ export async function getModular(projectId: number): Promise<IModularResponse[]>
     for (const item of modulars) {
       result.push({
         modularId: item.id,
+        modularName: item.name,
         basePath: modularList.basePath
       })
     }

@@ -11,6 +11,7 @@ import { generateDeclaration } from '@/generate/declaration';
 import { initConfig, existConfig, getConfig } from '@/utils/config'
 import path from 'path';
 import { initAxios } from '@/utils/http';
+import { updateDB } from '@/utils/nedb';
 
 /**
  * @description 生成typescript文档
@@ -36,6 +37,7 @@ export async function generateTypescript() {
       return;
     }
   }
+  // 初始化请求方法
   initAxios();
   // 登录
   await Login();
@@ -52,6 +54,7 @@ export async function generateTypescript() {
     apiInfos.push({
       list: await getApiList(item.modularId),
       modularId: item.modularId,
+      modularName: item.modularName,
       basePath: item.basePath
     })
   }
@@ -68,5 +71,7 @@ export async function generateTypescript() {
     // 生成接口文件
     generateInterface(item.list, projectName, projectId, item.basePath, item.modularId)
   }
+  // 更新缓存
+  updateDB(apiInfos, projectName, projectId);
   clg('yellow', '> 接口生成成功');
 }

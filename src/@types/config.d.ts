@@ -34,3 +34,30 @@ interface IListItem {
   id: number
   basepath: string,
 }
+
+// diff的数据
+interface IDiffInfo {
+  id: number,
+  title: string,
+  url: string
+}
+
+// 接口缓存数据
+interface IApiCache {
+  // 接口ID
+  id: number;
+  // 更新时间
+  updateTime: number;
+  // 模块ID
+  modularId: number;
+  // 模块名称
+  modularName: string;
+  // 项目名
+  projectName: string;
+  // 项目ID
+  projectId: number;
+  // basePath
+  basePath: string;
+  // 当前项目路径
+  cwd?: string;
+}

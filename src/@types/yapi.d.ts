@@ -7,6 +7,7 @@ interface IProjectResponse {
 // 模块返回信息
 interface IModularResponse {
   modularId: number;
+  modularName: string;
   basePath: string;
 }
 
@@ -20,6 +21,7 @@ interface IModularLiatResponse {
 interface IApiInfoList {
   list: IApiInfoResponse[];
   modularId: number;
+  modularName: string;
   basePath: string;
 }
 

@@ -4,7 +4,8 @@
   "description": "> Yapi 生成 Typescript`请求方法`及`声明文件`工具",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node --files -r tsconfig-paths/register ./src/index.ts -g"
+    "dev": "ts-node --files -r tsconfig-paths/register ./src/index.ts -g",
+    "diff": "ts-node --files -r tsconfig-paths/register ./src/index.ts -d"
   },
   "repository": {
     "type": "git",
@@ -15,10 +16,12 @@
   "dependencies": {
     "axios": "^0.21.1",
     "commander": "^7.2.0",
-    "inquirer": "^8.1.1"
+    "inquirer": "^8.1.1",
+    "nedb": "^1.8.0"
   },
   "devDependencies": {
     "@types/inquirer": "^7.3.2",
+    "@types/nedb": "^1.8.11",
     "tsconfig-paths": "^3.9.0"
   }
 }
