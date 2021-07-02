@@ -1,21 +1,18 @@
 {
-  "name": "yapi2typescript",
+  "name": "y2t",
   "version": "1.0.0",
   "description": "Yapi 生成 Typescript`请求方法`及`声明文件`工具",
-  "main": "lib/core/index.js",
+  "main": "lib/core/core.js",
+  "types": "lib/core/src/core.d.ts",
   "bin": {
-    "y2t": "lib/index.js"
+    "y2t": "lib/core/index.js"
   },
   "scripts": {
     "dev": "ts-node --files -r tsconfig-paths/register ./src/index.ts -g",
     "diff": "ts-node --files -r tsconfig-paths/register ./src/index.ts -d",
     "build": "rollup -c"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/wynne-cwb/yapi-generate.git"
-  },
-  "author": "",
+  "author": "Wynne",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",

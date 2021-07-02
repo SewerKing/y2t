@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { program } from 'commander'
 import pkg from '../package.json'
-import { generateTypescript } from './generate'
+import { generateTypescript } from './generate/index'
 import { diffInterface } from './generate/diff'
 import { initConfig } from './utils/config'
 import { removeDBCache } from './utils/nedb'

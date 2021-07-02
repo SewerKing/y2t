@@ -14,7 +14,7 @@ export default {
   input: ['./src/index.ts', './src/core.ts'],
   // 输出目录
   output: {
-    dir: './lib',
+    dir: './lib/core',
     format: 'cjs'
   },
   plugins: [
