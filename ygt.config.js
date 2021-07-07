@@ -14,8 +14,8 @@ module.exports = {
     537: {
       exportName: 'crmApi',
       // 返回报文泛式
-      wrapper: '{ code: string, message: string, data: T }',
-    },
+      wrapper: '{ code: string, message: string, data: T }'
+    }
   },
   // 请求体实例文件路径
   requestFilePath: 'src/utils/http',
@@ -23,4 +23,4 @@ module.exports = {
   tsIgnore: true,
   // 忽略eslint
   esLintIgnore: true
-};
+}

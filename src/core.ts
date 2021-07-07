@@ -5,7 +5,7 @@ import { getModularList } from './yapi/modular'
 import { generateInterface } from './generate/interface'
 import { generateDeclaration } from './generate/declaration'
 import { getUpdateList, generateUpdateInterface } from './generate/diff'
-import { setConfigRootPath, generateDefaultConfig, existConfig } from './utils/config'
+import { setConfigRootPath, generateDefaultConfig, existConfig, getConfig } from './utils/config'
 import { initAxios } from './utils/http'
 
 export {
@@ -15,6 +15,8 @@ export {
   initAxios,
   // 判断是否有配置
   existConfig,
+  // 获取配置
+  getConfig,
   // 生成默认配置
   generateDefaultConfig,
   // 登录
