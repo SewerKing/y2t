@@ -1,0 +1,11 @@
+node_modules
+src/apis
+src/utils/data
+./ygt.config.js
+.*.swp
+._*
+.DS_Store
+.git
+.hg
+.lock-wscript
+.svn
