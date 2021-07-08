@@ -15,7 +15,7 @@ import { formatCode } from '@/utils/prettify'
  * @param projectName
  * @param modularId
  */
-export async function generateDeclaration (apis: IApiInfoResponse[], projectName: string, modularId: number): Promise<void> {
+export async function generateDeclaration(apis: IApiInfoResponse[], projectName: string, modularId: number): Promise<void> {
   if (!apis || apis.length === 0) {
     throw new Error('生成的接口列表为空')
   }
@@ -91,7 +91,7 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
       .replace('{ResponseData}', responseContent.join('\r\n')) // 替换response
       .replace('{RequestData}', requestContent.join('\r\n')) // 替换request
     // 校验忽略文本
-    const ignore = `${config.tsIgnore ? '// @ts-ignore\n' : ''}${config.esLintIgnore ? '/* eslint-disable */\n' : ''}`
+    const ignore = `${config.esLintIgnore ? '/* eslint-disable */\n' : ''}${config.tsIgnore ? '// @ts-ignore\n' : ''}`
     dtsContent = dtsTemplate
       .replace('{ProjectName}', underlineToHump(projectName, true)) // 替换命名空间名
       .replace('{BodyData}', bodyContent) // 替换Body
@@ -104,7 +104,7 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
 }
 
 // 生成请求参数
-function generateQueryDts (api: IApiInfoResponse) {
+function generateQueryDts(api: IApiInfoResponse) {
   if (!api?.detail?.query || api.detail.query.length === 0) return undefined
   const queryBody = api.detail.query.map(e => {
     let template = e.desc

@@ -77,9 +77,8 @@ export function generateInterface (apis: IApiInfoResponse[], projectName: string
     const wrapper = config.projectMapping[projectId].wrapper
     // 请求方法文件路径
     const requestFilePath = config.requestFilePath
-    // 配置 请求体
     // 校验忽略文本
-    const ignore = `${config.tsIgnore ? '// @ts-ignore\n' : ''}${config.esLintIgnore ? '/* eslint-disable */\n' : ''}`
+    const ignore = `${config.esLintIgnore ? '/* eslint-disable */\n' : ''}${config.tsIgnore ? '// @ts-ignore\n' : ''}`
     // 如果不存在该文件，则从模板新增
     apiContent = apiTemplate
       .replace('{RequestFilePath}', requestFilePath) // 替换请求方法文件路径
