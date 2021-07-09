@@ -7,7 +7,6 @@ import { generateDeclaration } from './generate/declaration'
 import { getUpdateList, generateUpdateInterface } from './generate/diff'
 import { setConfigRootPath, generateDefaultConfig, existConfig, getConfig } from './utils/config'
 import { initAxios } from './utils/http'
-
 export {
   // 设置配置文件根路径
   setConfigRootPath,

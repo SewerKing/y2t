@@ -47,6 +47,9 @@ export async function getUpdateList (localCaches: IApiCache[]): Promise<IApiCach
 export async function generateUpdateInterface (list: IApiCache[]): Promise<IDiffUpdateResponse[]> {
   // 获取参数
   const config = getConfig()
+  if (typeof config === 'string') {
+    throw new Error(config)
+  }
   const result: IDiffUpdateResponse[] = []
   let apiInfos: IApiInfoList[] = []
   for (const item of list) {

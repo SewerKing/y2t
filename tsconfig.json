@@ -13,5 +13,9 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "awesomeTypescriptLoaderOptions": {
+    // 加速编译
+    "useBabel": true
+  }
 }

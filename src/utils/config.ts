@@ -9,7 +9,7 @@ let configRootPath = process.cwd()
  * @author Wynne
  * @date 2021-07-02
  */
-function configPath() {
+function configPath () {
   return path.resolve(configRootPath, './ygt.config.js')
 }
 
@@ -20,7 +20,7 @@ function configPath() {
  * @export
  * @param root
  */
-export function setConfigRootPath(root: string): void {
+export function setConfigRootPath (root: string): void {
   configRootPath = root
 }
 
@@ -31,7 +31,32 @@ export function setConfigRootPath(root: string): void {
  * @export
  * @return {*}
  */
-export function getConfig(): IConfig { return require(configPath()) }
+export function getConfig (): IConfig | string {
+  if (existConfig()) {
+    const config: IConfig = require(configPath())
+    if (!config.account || !config.password) {
+      return '请配置Yapi账号密码'
+    }
+    if (!config.originUrl) {
+      return '请配置Yapi地址'
+    }
+    if (!config.outDir) {
+      return '请配置Yapi文件生成输出目录'
+    }
+    if (!config.fetchModule) {
+      return '请配置Yapi请求声明模块'
+    }
+    if (!config.projectMapping) {
+      return '请配置Yapi项目映射'
+    }
+    if (!config.requestFilePath) {
+      return '请配置axios请求方法文件路径'
+    }
+    return config
+  } else {
+    return 'ygt.config.js 配置文件不存在'
+  }
+}
 
 /**
  * @description 是否存在配置

@@ -9,6 +9,9 @@ import { getConfig } from './config'
  */
 export function initAxios (): void {
   const config = getConfig()
+  if (typeof config === 'string') {
+    throw new Error(config)
+  }
   axios.defaults.baseURL = config.originUrl
 }
 

@@ -4,6 +4,9 @@ import { http, setCookie } from '@/utils/http'
 
 export async function Login (): Promise<void> {
   const config = getConfig()
+  if (typeof config === 'string') {
+    throw new Error(config)
+  }
   return new Promise((resolve, reject) => {
     // 登录
     clg('yellow', '> yapi登录中...')

@@ -10,7 +10,7 @@ import { http } from './http'
  * @return {*}
  */
 export function underlineToHump (name: string, isBigHump = false): string {
-  let hump = name.replace(/[\_|\-|\s](\w)/g, function (all, letter) {
+  let hump = name.replace(/[_|\-|\s](\w)/g, function (all, letter) {
     return letter.toUpperCase()
   })
   hump = (isBigHump ? hump.charAt(0).toLocaleUpperCase() : hump.charAt(0).toLocaleLowerCase()) + hump.substr(1)

@@ -61,6 +61,9 @@ export async function generateTypescript (): Promise<void> {
   clg('yellow', '> yapi接口信息拉取成功')
   clg('yellow', '> 正在生成接口文件...')
   const config = getConfig()
+  if (typeof config === 'string') {
+    throw new Error(config)
+  }
   // 创建输出文件夹
   const outdir = path.resolve(config.outDir)
   generateDir(outdir)

@@ -18,6 +18,8 @@ module.exports = {
   rules: {
     'no-async-promise-executor': 'off',
     'no-template-curly-in-string': 'off',
-    'no-use-before-define': 'off'
+    'no-use-before-define': 'off',
+    'prefer-promise-reject-errors': 'off',
+    '@typescript-eslint/no-var-requires': 'off'
   }
 }

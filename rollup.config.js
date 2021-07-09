@@ -43,7 +43,8 @@ export default {
     // 拷贝静态文件
     copy({
       targets: [
-        { src: 'src/templates/', dest: 'lib/' }
+        { src: 'src/templates/', dest: 'lib/' },
+        { src: 'src/@types/', dest: 'lib/core' }
       ]
     })
   ]

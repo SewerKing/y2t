@@ -5,6 +5,7 @@ import { getQueryName, getRequestName, getResponseName, underlineToHump } from '
 import { generateDir } from '@/utils/file'
 import { jsonSchemaToDts } from '@/utils/jsonSchema'
 import { formatCode } from '@/utils/prettify'
+import { clg } from '@/utils/console'
 
 /**
  * @description 生成声明文件
@@ -15,11 +16,14 @@ import { formatCode } from '@/utils/prettify'
  * @param projectName
  * @param modularId
  */
-export async function generateDeclaration(apis: IApiInfoResponse[], projectName: string, modularId: number): Promise<void> {
+export async function generateDeclaration (apis: IApiInfoResponse[], projectName: string, modularId: number): Promise<void> {
   if (!apis || apis.length === 0) {
     throw new Error('生成的接口列表为空')
   }
   const config = getConfig()
+  if (typeof config === 'string') {
+    return clg('red', config)
+  }
   // 声明文件模板储存地址
   const dtsTemplate = fs.readFileSync(path.join(__dirname, '../templates/dtsTemplate/dts.tpl')).toString()
   // 声明文件Body模板存储路径
@@ -104,7 +108,7 @@ export async function generateDeclaration(apis: IApiInfoResponse[], projectName:
 }
 
 // 生成请求参数
-function generateQueryDts(api: IApiInfoResponse) {
+function generateQueryDts (api: IApiInfoResponse) {
   if (!api?.detail?.query || api.detail.query.length === 0) return undefined
   const queryBody = api.detail.query.map(e => {
     let template = e.desc
