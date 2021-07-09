@@ -1,4 +1,5 @@
-import { http } from '@/utils/http'
+import { IListItem, IModularLiatResponse, IModularResponse } from '../typing/yapi'
+import { http } from '../utils/http'
 import inquirer, { QuestionCollection } from 'inquirer'
 
 /**

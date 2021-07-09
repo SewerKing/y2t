@@ -1,4 +1,5 @@
-import { http } from '@/utils/http'
+import { IApiDetail, IApiInfoResponse } from '../typing/yapi'
+import { http } from '../utils/http'
 
 // 获取api列表
 export async function getApiList (modularId: number): Promise<IApiInfoResponse[]> {

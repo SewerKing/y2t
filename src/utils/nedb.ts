@@ -1,6 +1,7 @@
 import Nedb from 'nedb'
 import path from 'path'
 import fs from 'fs'
+import { IApiCache, IApiInfoList } from '../typing/yapi'
 
 /**
  * @description 获取数据库客户端

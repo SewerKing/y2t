@@ -1,9 +1,10 @@
 import fs from 'fs'
 import path from 'path'
-import { getConfig } from '@/utils/config'
-import { generateDir } from '@/utils/file'
-import { formatCode } from '@/utils/prettify'
-import { getBodyPath, getInterfaceName, getNamespace, getQueryPath, getResponesPath, underlineToHump } from '@/utils/name'
+import { getConfig } from '../utils/config'
+import { generateDir } from '../utils/file'
+import { formatCode } from '../utils/prettify'
+import { getBodyPath, getInterfaceName, getNamespace, getQueryPath, getResponesPath, underlineToHump } from '../utils/name'
+import { IApiDetailParam, IApiInfoResponse } from '../typing/yapi'
 
 /**
  * @description 生成API请求方法

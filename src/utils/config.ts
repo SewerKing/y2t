@@ -2,6 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import inquirer from 'inquirer'
 import { clg } from './console'
+import { IConfig } from '../typing/config'
 let configRootPath = process.cwd()
 
 /**

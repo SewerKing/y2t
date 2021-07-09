@@ -1,6 +1,7 @@
-import { http } from '@/utils/http'
+import { http } from '../utils/http'
 import inquirer, { QuestionCollection } from 'inquirer'
-import { zhCN2EN } from '@/utils/name'
+import { zhCN2EN } from '../utils/name'
+import { IListItem, IProjectResponse } from '../typing/yapi'
 
 /**
  * @description 获取项目列表

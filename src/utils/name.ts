@@ -1,3 +1,4 @@
+import { IApiInfoResponse } from '../typing/yapi'
 import { http } from './http'
 
 /**

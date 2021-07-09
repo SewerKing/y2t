@@ -1,11 +1,12 @@
 import fs from 'fs'
 import path from 'path'
-import { getConfig } from '@/utils/config'
-import { getQueryName, getRequestName, getResponseName, underlineToHump } from '@/utils/name'
-import { generateDir } from '@/utils/file'
-import { jsonSchemaToDts } from '@/utils/jsonSchema'
-import { formatCode } from '@/utils/prettify'
-import { clg } from '@/utils/console'
+import { getConfig } from '../utils/config'
+import { getQueryName, getRequestName, getResponseName, underlineToHump } from '../utils/name'
+import { generateDir } from '../utils/file'
+import { jsonSchemaToDts } from '../utils/jsonSchema'
+import { formatCode } from '../utils/prettify'
+import { clg } from '../utils/console'
+import { IApiInfoResponse } from '../typing/yapi'
 
 /**
  * @description 生成声明文件

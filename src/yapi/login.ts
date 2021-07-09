@@ -1,6 +1,6 @@
-import { clg } from '@/utils/console'
-import { getConfig } from '@/utils/config'
-import { http, setCookie } from '@/utils/http'
+import { clg } from '../utils/console'
+import { getConfig } from '../utils/config'
+import { http, setCookie } from '../utils/http'
 
 export async function Login (): Promise<void> {
   const config = getConfig()
