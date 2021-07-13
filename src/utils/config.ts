@@ -33,30 +33,32 @@ export function setConfigRootPath (root: string): void {
  * @return {*}
  */
 export function getConfig (): IConfig {
-  if (existConfig()) {
-    const config: IConfig = require(configPath())
-    if (!config.account || !config.password) {
-      throw new Error('请配置Yapi账号密码')
-    }
-    if (!config.originUrl) {
-      throw new Error('请配置Yapi地址')
-    }
-    if (!config.outDir) {
-      throw new Error('请配置Yapi文件生成输出目录')
-    }
-    if (!config.fetchModule) {
-      throw new Error('请配置Yapi请求声明模块')
-    }
-    if (!config.projectMapping) {
-      throw new Error('请配置Yapi项目映射')
-    }
-    if (!config.requestFilePath) {
-      throw new Error('请配置axios请求方法文件路径')
-    }
-    return config
-  } else {
+  if (!existConfig()) {
     throw new Error('ygt.config.js 配置文件不存在')
   }
+  if (require.cache[configPath()]) {
+    delete require.cache[configPath()]
+  }
+  const config: IConfig = require(configPath())
+  if (!config.account || !config.password) {
+    throw new Error('请配置Yapi账号密码')
+  }
+  if (!config.originUrl) {
+    throw new Error('请配置Yapi地址')
+  }
+  if (!config.outDir) {
+    throw new Error('请配置Yapi文件生成输出目录')
+  }
+  if (!config.fetchModule) {
+    throw new Error('请配置Yapi请求声明模块')
+  }
+  if (!config.projectMapping) {
+    throw new Error('请配置Yapi项目映射')
+  }
+  if (!config.requestFilePath) {
+    throw new Error('请配置axios请求方法文件路径')
+  }
+  return config
 }
 
 /**
