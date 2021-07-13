@@ -8,7 +8,10 @@
     "esModuleInterop": true,
     "pretty": true,
     "resolveJsonModule": true,
-    "baseUrl": "./"
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src"],
   "awesomeTypescriptLoaderOptions": {

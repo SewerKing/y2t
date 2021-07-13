@@ -20,9 +20,6 @@ import { IApiDetailParam, IApiInfoResponse } from '../typing/yapi'
  */
 export function generateInterface (apis: IApiInfoResponse[], projectName: string, projectId: number, basePath: string, modularId: number) {
   const config = getConfig()
-  if (typeof config === 'string') {
-    throw new Error(config)
-  }
   const apiTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/api.tpl')).toString()
   if (!(projectId in config.projectMapping)) {
     throw new Error(`生成失败，项目：${projectName}，ID：${projectId} 未配置 projectMapping`)
@@ -102,9 +99,6 @@ export function generateInterface (apis: IApiInfoResponse[], projectName: string
 // 生成Api请求方法
 function generateApiFunction (api: IApiInfoResponse, projectName: string, projectId: number) {
   const config = getConfig()
-  if (typeof config === 'string') {
-    throw new Error(config)
-  }
   const apiBodyTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/body.tpl')).toString()
   // 获取命名空间名
   const namespaceName = getNamespace(projectName)

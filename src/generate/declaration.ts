@@ -5,7 +5,6 @@ import { getQueryName, getRequestName, getResponseName, underlineToHump } from '
 import { generateDir } from '../utils/file'
 import { jsonSchemaToDts } from '../utils/jsonSchema'
 import { formatCode } from '../utils/prettify'
-import { clg } from '../utils/console'
 import { IApiInfoResponse } from '../typing/yapi'
 
 /**
@@ -22,9 +21,6 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
     throw new Error('生成的接口列表为空')
   }
   const config = getConfig()
-  if (typeof config === 'string') {
-    return clg('red', config)
-  }
   // 声明文件模板储存地址
   const dtsTemplate = fs.readFileSync(path.join(__dirname, '../templates/dtsTemplate/dts.tpl')).toString()
   // 声明文件Body模板存储路径

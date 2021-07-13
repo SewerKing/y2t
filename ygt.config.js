@@ -2,7 +2,7 @@ module.exports = {
   // 账号
   account: 'chenweibin@codemao.cn',
   // 密码
-  password: '',
+  password: 'f8461973',
   // Yapi网址链接
   originUrl: 'https://interface.codemao.cn/',
   // 请求声明模块
