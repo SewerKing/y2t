@@ -4,7 +4,7 @@ import { http, setCookie } from '../utils/http'
 
 export async function Login (): Promise<void> {
   const config = getConfig()
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // 登录
     clg('yellow', '> yapi登录中...')
     // 请求yapi登录接口，获取cookie
@@ -25,7 +25,7 @@ export async function Login (): Promise<void> {
         resolve()
       } else {
         clg('yellow', '> yapi登录失败：', res.data.errmsg)
-        reject(new Error('yapi登录失败'))
+        throw new Error('yapi登录失败: ' + res.data.errmsg)
       }
     }).catch(err => {
       throw new Error(`yapi登录失败：${err.toString()}`)
