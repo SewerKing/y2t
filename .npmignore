@@ -2,6 +2,9 @@ node_modules
 src/apis
 src/utils/data
 ./ygt.config.js
+./process.drawio
+./process.png
+./rollup.config.js
 .*.swp
 ._*
 .DS_Store
