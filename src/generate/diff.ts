@@ -12,6 +12,34 @@ import { generateDeclaration } from '../generate/declaration'
 import { IApiCache, IApiInfoList, IDiffUpdateResponse } from '../typing/yapi'
 
 /**
+ * @description 获取缓存数据
+ * @author Wynne
+ * @date 2021-07-16
+ * @export
+ */
+export function getCacheList (data: IApiInfoList[], projectName: string, projectId: number): IApiCache[] {
+  let apiList: IApiCache[] = []
+  apiList = data.reduce((pre: IApiCache[], curr: IApiInfoList) => {
+    const list = curr.list.map(item => {
+      const cache: IApiCache = {
+        id: item.id,
+        updateTime: item.detail.updateTime,
+        modularId: curr.modularId,
+        modularName: curr.modularName,
+        projectName: projectName,
+        projectId: projectId,
+        basePath: curr.basePath,
+        cwd: process.cwd()
+      }
+      return cache
+    })
+    pre.push(...list)
+    return pre
+  }, apiList)
+  return apiList
+}
+
+/**
  * @description 获取更变接口列表
  * @author Wynne
  * @date 2021-07-02

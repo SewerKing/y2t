@@ -58,6 +58,7 @@ export function getConfig (): IConfig {
   if (!config.requestFilePath) {
     throw new Error('请配置axios请求方法文件路径')
   }
+  config.outDir = path.resolve(configRootPath, config.outDir)
   return config
 }
 

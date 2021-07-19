@@ -1,6 +1,7 @@
+import fs from 'fs'
 import Nedb from 'nedb'
 import path from 'path'
-import fs from 'fs'
+import { getCacheList } from '../generate/diff'
 import { IApiCache, IApiInfoList } from '../typing/yapi'
 
 /**
@@ -33,24 +34,7 @@ function getDBClient () {
  * @return {*}
  */
 export async function updateDB (data: IApiInfoList[], projectName: string, projectId: number): Promise<void> {
-  let apiList: IApiCache[] = []
-  apiList = data.reduce((pre: IApiCache[], curr: IApiInfoList) => {
-    const list = curr.list.map(item => {
-      const cache: IApiCache = {
-        id: item.id,
-        updateTime: item.detail.updateTime,
-        modularId: curr.modularId,
-        modularName: curr.modularName,
-        projectName: projectName,
-        projectId: projectId,
-        basePath: curr.basePath,
-        cwd: process.cwd()
-      }
-      return cache
-    })
-    pre.push(...list)
-    return pre
-  }, apiList)
+  const apiList = getCacheList(data, projectName, projectId)
   return new Promise(async (resolve, reject) => {
     // 获取DB客户端
     const db = getDBClient()
