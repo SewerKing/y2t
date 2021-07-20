@@ -150,28 +150,37 @@ const handleGenerateFiles = async (menu: QuickMenuItem[]) => {
   progressView.show()
   // 已完成进度
   let count = 1
+  // 已生成的接口数组
+  const apis = []
   // 异步循环 拉取api详情
   for (const { id: modularId, label: modularName } of menu) {
     try {
       // 进度百分比
       const increment = (count / menu.length) * 100
+      console.log('increment', increment)
       // 更新进度信息
       progressView.update(`(${count}/${menu.length})`, increment)
       // 调用生成文件函数
-      generateFile(projectId, projectName, modularId, modularName, basepath)
+      const list = await generateFile(projectId, projectName, modularId, modularName, basepath)
+      apis.push(...list)
       // 防止进度条溢出
       count < menu.length && count++
     } catch (error) {
       progressView.close()
       window.showErrorMessage(
-        error.message || `项目：${projectName} (${count}/${menu.length}) 生成失败`
+        error.message || `项目：${projectName} 模块：${count}/${menu.length} 生成失败`
       )
       console.error(error)
-      throw new Error(`项目：${projectName} (${count}/${menu.length}) 生成失败`)
+      throw new Error(`项目：${projectName} 模块：${count}/${menu.length} 生成失败`)
     }
   }
   progressView.close()
-  window.showInformationMessage(`项目：${projectName} (${count}/${menu.length}) 生成完毕`)
+  const errorApiIds = apis.filter((item) => !item.success).map((item) => item.id)
+  const errorTips =
+    errorApiIds.length > 0 ? `其中${errorApiIds.toString()}接口异常, 已默认使用any代替` : ''
+  window.showInformationMessage(
+    `项目：${projectName} 模块：${count}/${menu.length} 生成完毕 ${errorTips}`
+  )
 }
 
 /**
@@ -193,6 +202,7 @@ export const generateFile = async (
   generateInterface(list, projectName, projectId, basepath, modularId)
   // 设置缓存
   setApiCache(projectId, projectName, modularId, modularName, basepath, list)
+  return list
 }
 
 /**

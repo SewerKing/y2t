@@ -1,10 +1,11 @@
 import { window, commands, StatusBarItem, StatusBarAlignment } from 'vscode'
-import { getCacheList, getUpdateList } from 'y2t'
+import { initAxios, Login, getCacheList, getUpdateList } from 'y2t'
 import { IApiCache } from 'y2t/src/typing/yapi'
 import { generateFile } from './yapi'
 import { DiffCommandType, DiffStatusBarText, DiffMenuEnums } from '../enums'
 import { DIFF_MENU } from '../const'
 import { state } from '../store'
+import { getWorkSpaceY2tConfig } from '../utils'
 import { WorkStateApiCache, getApiCache, removeApiCache } from '../utils/apiCache'
 import { createProgressView } from '../utils/progress'
 
@@ -56,7 +57,13 @@ const registerStatusCommands = async (key: DiffCommandType) => {
  * @Date: 2021-07-19 19:25:51
  * @Description: 执行菜单任务
  */
-const handleRunTask = (id: DiffMenuEnums) => {
+const handleRunTask = async (id: DiffMenuEnums) => {
+  // 获取配置
+  getWorkSpaceY2tConfig()
+  // 初始化axios
+  initAxios()
+  // 进行登录
+  await Login()
   const task = {
     [DiffMenuEnums.diffApiCache]: () => handleDiffApi(),
     [DiffMenuEnums.clearApiCache]: () => {
@@ -101,6 +108,8 @@ const handleDiffApi = async () => {
           progressView.show()
           // 已完成进度
           let count = 1
+          // 已生成的接口数组
+          const apis = []
           for (const cache of data) {
             const { projectId, projectName, modularId, modularName, basePath } = cache
             try {
@@ -109,7 +118,14 @@ const handleDiffApi = async () => {
               // 更新进度信息
               progressView.update(`(${count}/${data.length})`, increment)
               // 生成文件
-              generateFile(projectId, projectName, modularId, modularName, basePath)
+              const list = await generateFile(
+                projectId,
+                projectName,
+                modularId,
+                modularName,
+                basePath
+              )
+              apis.push(...list)
               // 防止进度条溢出
               count < data.length && count++
             } catch (error) {
@@ -119,6 +135,10 @@ const handleDiffApi = async () => {
               throw new Error(`api (${count}/${data.length}) 更新失败`)
             }
           }
+          const errorApiIds = apis.filter((item) => !item.success).map((item) => item.id)
+          const errorTips =
+            errorApiIds.length > 0 ? `其中${errorApiIds.toString()}接口异常, 已默认使用any代替` : ''
+          window.showInformationMessage(`模块：${count}/${data.length} 生成完毕 ${errorTips}`)
         }
       })
   } catch (error) {
