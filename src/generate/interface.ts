@@ -18,7 +18,7 @@ import { IApiDetailParam, IApiInfoResponse } from '../typing/yapi'
  * @param modularId
  * @return {*}
  */
-export function generateInterface (apis: IApiInfoResponse[], projectName: string, projectId: number, basePath: string, modularId: number) {
+export function generateInterface (apis: IApiInfoResponse[], projectName: string, projectId: number, basePath: string, modularId: number, onProgress?: () => void) {
   const config = getConfig()
   const apiTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/api.tpl')).toString()
   if (!(projectId in config.projectMapping)) {
@@ -30,13 +30,15 @@ export function generateInterface (apis: IApiInfoResponse[], projectName: string
   if (apis && apis.length > 0) {
     apiList.push(`//#region interface:${modularId}`)
   }
-  for (const api of apis) {
+  for (let index = 0; index < apis.length; index++) {
+    const api = apis[index]
     try {
       // 添加接口内容
       apiList.push(generateApiFunction(api, projectName, projectId))
     } catch (err) {
       throw new Error(`接口：${api.path} 生成失败：${err.toString()}`)
     }
+    onProgress && onProgress()
   }
   // 标记module的结束，方便后续更新
   if (apis && apis.length > 0) {

@@ -20,6 +20,7 @@ module.exports = {
     'no-template-curly-in-string': 'off',
     'no-use-before-define': 'off',
     'prefer-promise-reject-errors': 'off',
-    '@typescript-eslint/no-var-requires': 'off'
+    '@typescript-eslint/no-var-requires': 'off',
+    'no-prototype-builtins': 'off'
   }
 }

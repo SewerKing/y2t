@@ -1,6 +1,6 @@
 {
   "name": "y2t",
-  "version": "1.0.21",
+  "version": "1.0.23",
   "description": "Yapi 生成 Typescript`请求方法`及`声明文件`工具",
   "main": "lib/core/core.js",
   "types": "lib/core/src/core.d.ts",
@@ -20,14 +20,18 @@
     "inquirer": "^8.1.1",
     "json-schema-to-typescript": "^10.1.4",
     "nedb": "^1.8.0",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "single-line-log": "^1.1.2"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/inquirer": "^7.3.2",
+    "@types/multi-progress": "^2.0.3",
     "@types/nedb": "^1.8.11",
+    "@types/progress": "^2.0.4",
+    "@types/single-line-log": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
     "eslint": "^7.29.0",

@@ -32,6 +32,8 @@ export interface IApiInfoResponse {
   path: string,
   method: string,
   detail: IApiDetail
+  success: boolean,
+  message: string
 }
 
 export interface IApiDetailParam {
@@ -39,6 +41,12 @@ export interface IApiDetailParam {
   name: string,
   type: string,
   required: boolean
+}
+
+export interface IApiDetailResult {
+  success: boolean
+  message: string
+  detail: IApiDetail
 }
 
 // API详细信息
@@ -73,12 +81,7 @@ export interface IDiffInfo {
   url: string
 }
 
-// 接口缓存数据
-export interface IApiCache {
-  // 接口ID
-  id: number;
-  // 更新时间
-  updateTime: number;
+export type IApiCache = {
   // 模块ID
   modularId: number;
   // 模块名称
@@ -91,6 +94,16 @@ export interface IApiCache {
   basePath: string;
   // 当前项目路径
   cwd?: string;
+  // 接口信息
+  list: IApiCacheItem[]
+}
+
+// 接口缓存数据
+export interface IApiCacheItem {
+  // 接口ID
+  id: number;
+  // 更新时间
+  updateTime: number;
 }
 
 // 接口更新返回参数
@@ -98,4 +111,12 @@ export interface IDiffUpdateResponse {
   list: IApiInfoList[],
   projectName: string,
   projectId: number
+}
+
+// diff所需的接口数据
+export type IDiffInterface = Map<number, IDiffInterfaceItem[]>
+
+export interface IDiffInterfaceItem {
+  upTime: number,
+  id: number,
 }

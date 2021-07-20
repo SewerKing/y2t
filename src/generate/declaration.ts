@@ -16,7 +16,7 @@ import { IApiInfoResponse } from '../typing/yapi'
  * @param projectName
  * @param modularId
  */
-export async function generateDeclaration (apis: IApiInfoResponse[], projectName: string, modularId: number): Promise<void> {
+export async function generateDeclaration (apis: IApiInfoResponse[], projectName: string, modularId: number, onProgress?: () => void): Promise<void> {
   if (!apis || apis.length === 0) {
     throw new Error('生成的接口列表为空')
   }
@@ -33,7 +33,8 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
   requestContent.push(`//#region request:${modularId}`)
   responseContent.push(`//#region response:${modularId}`)
   // 遍历接口拼接声明文件内容
-  for (const api of apis) {
+  for (let index = 0; index < apis.length; index++) {
+    const api = apis[index]
     try {
       // 获取response声明文件
       const responseDts = api.detail.response ? await jsonSchemaToDts(api.detail.response, getResponseName(api)) : undefined
@@ -56,6 +57,7 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
     } catch (err) {
       throw new Error(`接口声明：${api.path} 生成失败:${err.toString}`)
     }
+    onProgress && onProgress()
   }
   // 标记module的结束，方便后续更新
   responseContent.push(`//#endregion response:${modularId}`)

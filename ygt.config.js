@@ -15,6 +15,9 @@ module.exports = {
       exportName: 'crmApi',
       // 返回报文泛式
       wrapper: '{ code: string, message: string, data: T }'
+    },
+    373: {
+      exportName: 'nemoApi'
     }
   },
   // 请求体实例文件路径

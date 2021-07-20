@@ -6,10 +6,11 @@ import { initAxios } from '../utils/http'
 import { getConfig } from '../utils/config'
 import { generateDir } from '../utils/file'
 import { getDBCache, updateDB } from '../utils/nedb'
-import { getApiDetail, getApiList } from '../yapi/api'
+import { getApiList } from '../yapi/api'
 import { generateInterface } from '../generate/interface'
 import { generateDeclaration } from '../generate/declaration'
-import { IApiCache, IApiInfoList, IDiffUpdateResponse } from '../typing/yapi'
+import { IApiCache, IApiInfoList, IDiffInterface, IDiffUpdateResponse } from '../typing/yapi'
+import { getDiffInterfaceList } from '../yapi/diff'
 
 /**
  * @description 获取缓存数据
@@ -20,20 +21,18 @@ import { IApiCache, IApiInfoList, IDiffUpdateResponse } from '../typing/yapi'
 export function getCacheList (data: IApiInfoList[], projectName: string, projectId: number): IApiCache[] {
   let apiList: IApiCache[] = []
   apiList = data.reduce((pre: IApiCache[], curr: IApiInfoList) => {
-    const list = curr.list.map(item => {
-      const cache: IApiCache = {
-        id: item.id,
-        updateTime: item.detail.updateTime,
-        modularId: curr.modularId,
-        modularName: curr.modularName,
-        projectName: projectName,
-        projectId: projectId,
-        basePath: curr.basePath,
-        cwd: process.cwd()
-      }
-      return cache
+    pre.push({
+      modularId: curr.modularId,
+      modularName: curr.modularName,
+      projectName: projectName,
+      projectId: projectId,
+      basePath: curr.basePath,
+      cwd: process.cwd(),
+      list: curr.list.map(e => ({
+        id: e.id,
+        updateTime: e.detail.updateTime
+      }))
     })
-    pre.push(...list)
     return pre
   }, apiList)
   return apiList
@@ -46,23 +45,34 @@ export function getCacheList (data: IApiInfoList[], projectName: string, project
  * @export
  */
 export async function getUpdateList (localCaches: IApiCache[]): Promise<IApiCache[]> {
+  // 获取最新的接口数据
+  let latestInterfaces = await getDiffInterfaceList(Array.from(new Set(localCaches.map(e => e.projectId))))
+  // 筛选出本地存在的模块
+  const modularIds = localCaches.map(e => e.modularId)
+  latestInterfaces = new Map(Array.from(latestInterfaces).filter(e => modularIds.includes(e[0])))
+  // 拼装本地数据，按模块ID划分
+  let localInterfaces: IDiffInterface = new Map()
+  localInterfaces = localCaches.reduce((pre, curr) => {
+    pre.set(curr.modularId, curr.list.map(e => ({
+      id: e.id,
+      upTime: e.updateTime
+    })))
+    return pre
+  }, localInterfaces)
   return new Promise(async (resolve) => {
-    let result: IApiCache[] = []
-    // 遍历缓存数组，对比最后更新时间
-    for (const item of localCaches) {
-      const detail = await getApiDetail(item.id)
-      if (localCaches.some(e => e.id === item.id && e.updateTime !== detail.updateTime)) {
-        result.push(item)
-      }
+    const updateList: IApiCache[] = []
+    for (const item of latestInterfaces.entries()) {
+      item[1].sort((a, b) => {
+        return a.id > b.id ? 1 : -1
+      })
+      const local = localInterfaces.get(item[0])?.sort((a, b) => {
+        return a.id > b.id ? 1 : -1
+      }) || []
+      const modal = localCaches.find(c => c.modularId === item[0])
+      if (!modal) continue
+      if (JSON.stringify(item[1]) !== JSON.stringify(local)) { updateList.push(modal) }
     }
-    // 根据模块ID去重
-    result = result.reduce((pre: IApiCache[], curr: IApiCache) => {
-      if (!pre.some(c => c.modularId === curr.modularId)) {
-        pre.push(curr)
-      }
-      return pre
-    }, [])
-    resolve(result)
+    resolve(updateList)
   })
 }
 

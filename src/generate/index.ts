@@ -13,6 +13,7 @@ import path from 'path'
 import { initAxios } from '../utils/http'
 import { updateDB } from '../utils/nedb'
 import { IApiInfoList } from '../typing/yapi'
+import { Progress } from '../utils/progress'
 
 /**
  * @description 生成typescript文档
@@ -48,31 +49,57 @@ export async function generateTypescript (): Promise<void> {
   const { projectId, projectName } = await getProjectId(groupId)
   // 选择模块
   const modulars = await getModular(projectId)
+  // 定义进度条
+  const progress = new Progress('> yapi接口信息拉取', modulars.length, () => {
+    progress.clear()
+    clg('yellow', '> yapi接口信息拉取成功')
+  })
   const apiInfos: IApiInfoList[] = []
-  clg('yellow', '> yapi接口信息拉取中...')
+  const errorList: string[] = []
   // 批量拉取接口信息
-  for (const item of modulars) {
+  for (let index = 0; index < modulars.length; index++) {
+    const item = modulars[index]
+    const interfaceList = await getApiList(item.modularId)
+    errorList.push(...interfaceList.filter(e => !e.success).map(e => e.message))
     apiInfos.push({
-      list: await getApiList(item.modularId),
+      list: interfaceList,
       modularId: item.modularId,
       modularName: item.modularName,
       basePath: item.basePath
     })
+    progress.push(index + 1)
   }
-  clg('yellow', '> yapi接口信息拉取成功')
-  clg('yellow', '> 正在生成接口文件...')
   const config = getConfig()
   // 创建输出文件夹
   const outdir = path.resolve(config.outDir)
   generateDir(outdir)
+  // 获取接口总数
+  const sum = apiInfos.reduce((pre, curr) => {
+    pre += curr.list.length
+    return pre
+  }, 0)
+  const dtsProgress = new Progress('> 正在生成声明文件', sum)
+  let dtsProgressCurr = 0
+  const apiProgress = new Progress('> 正在生成接口文件', sum)
+  let apiProgressCurr = 0
   // 生成声明文件
   for (const item of apiInfos) {
     // 生成声明文件
-    generateDeclaration(item.list, projectName, item.modularId)
+    await generateDeclaration(item.list, projectName, item.modularId, () => {
+      dtsProgressCurr++
+      dtsProgress.push(dtsProgressCurr)
+    })
     // 生成接口文件
-    generateInterface(item.list, projectName, projectId, item.basePath, item.modularId)
+    await generateInterface(item.list, projectName, projectId, item.basePath, item.modularId, () => {
+      apiProgressCurr++
+      apiProgress.push(apiProgressCurr)
+    })
+  }
+  clg('yellow', '> 生成成功')
+  if (errorList.length) {
+    clg('yellow', '> 生成时有以下接口异常，已默认使用any代替：')
+    clg('red', `${errorList.join('\n')}\n请检查Yapi是否规范`)
   }
   // 更新缓存
   updateDB(apiInfos, projectName, projectId)
-  clg('yellow', '> 接口生成成功')
 }

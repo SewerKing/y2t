@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { program } from 'commander'
 import pkg from '../package.json'
-import { generateTypescript } from './generate/index'
-import { diffInterface } from './generate/diff'
+import { program } from 'commander'
 import { initConfig } from './utils/config'
 import { removeDBCache } from './utils/nedb'
+import { diffInterface } from './generate/diff'
+import { generateTypescript } from './generate/index'
 
 // 配置执行参数
 program
