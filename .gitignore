@@ -1,5 +1,8 @@
 node_modules
 src/apis
 src/utils/data
+vscode-yapi-generate/out
+vscode-yapi-generate/.vscode
 /lib
 ./ygt.config.js
+.DS_Store
