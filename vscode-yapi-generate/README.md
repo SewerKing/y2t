@@ -1,4 +1,4 @@
-# CYG
+# Y2T
 
 > Yapi 生成 Typescript`请求方法`及`声明文件`工具
 
@@ -55,35 +55,28 @@
 ```js
 module.exports = {
   // 账号
-  account: 'xxxxxx@codemao.cn',
+  account: 'chenweibin@codemao.cn',
   // 密码
-  password: 'xxxxxx',
+  password: 'f8461973',
   // Yapi网址链接
-  originUrl: 'https://yapi.xxxxxx.cn',
-  // 声明模块
-  dtsModule:
-    "import { AxiosPromise as RequestPromise , AxiosRequestConfig as RequestConfig } from '@mlz/axios/node_modules/axios';",
+  originUrl: 'https://interface.codemao.cn/',
+  // 请求声明模块
+  fetchModule: 'import { AxiosPromise as RequestPromise , AxiosRequestConfig as RequestConfig } from "axios";',
   // 输出目录
   outDir: './src/apis',
-  // 项目跟请求方法映射（projectId为生成目录id）
-  // 参考url https://interface.codemao.cn/project/216/interface/api
-  // 其中216即为projectId
-  // apiRequestInstance 可配置同一模块下不同apiId采用不同请求体
-  // 参考url https://interface.codemao.cn/project/216/interface/api/143101
-  // 其中apiId为143101
+  // 项目跟请求方法映射
   projectMapping: {
-    projectId: {
-      exportName: 'marketApi',
-      wrapper: '{ errorCode:string, errorMsg:string, data: T }'
+    537: {
+      exportName: 'crmApi',
+      // 返回报文泛式
+      wrapper: '{ code: string, message: string, data: T }'
     },
-    projectId2: {
-      exportName: 'api'
+    258: {
+      exportName: 'nemoApi'
     }
   },
   // 请求体实例文件路径
   requestFilePath: 'src/utils/http',
-  // 输出语言
-  target: 'typescript',
   // 忽略ts校验
   tsIgnore: true,
   // 忽略eslint
@@ -99,7 +92,7 @@ module.exports = {
 | password        | 密码                                                                                                                 |                                                                                                                  |
 | originUrl       | Yapi 网址链接                                                                                                        | https://interface.codemao.cn                                                                                     |
 | outDir          | 输出目录，相对于当前工作区的根目录                                                                                   | ./src/apis                                                                                                       |
-| dtsModule       | 请求方法的声明模块                                                                                                   | "import { AxiosPromise as Promise , AxiosRequestConfig as RequestConfig } from '@mlz/axios/node_modules/axios';" |
+| fetchModule       | 请求方法的声明模块                                                                                                   | "import { AxiosPromise as Promise , AxiosRequestConfig as RequestConfig } from '@mlz/axios/node_modules/axios';" |
 | projectMapping  | 项目映射。因为我们一个工程中可能会有多个 api 地址，所以这里按照`项目id`进行了请求方法映射。                          |                                                                                                                  |
 | - projectId     | 项目 ID，参考 url:https://interface.codemao.cn/project/216/interface/api，其中216即为项目ID                          | 216                                                                                                              |
 | - exportName    | 请求方法名称，为了兼容不同的请求库，所以生成的代码中不会直接生成 ajax 请求方法，需要外部传入                         | marketApi                                                                                                        |

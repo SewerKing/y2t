@@ -146,7 +146,7 @@ function generateQueryDts (api: IApiInfoResponse) {
       */
       `
       : ''
-    template += `${e.name}${e.required ? '?' : ''}:${e.type};`
+    template += `${e.name}${e.required ? '' : '?'}:${e.type};`
     return template
   })
   queryBody.push('[k: string]: any;')
