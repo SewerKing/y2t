@@ -121,7 +121,7 @@ function generateApiFunction (api: IApiInfoResponse, projectName: string, projec
     ? config.projectMapping[projectId].wrapper
       ? `IResponseWrapper<${getResponesPath(namespaceName, api)},>`
       : `${getResponesPath(namespaceName, api)},`
-    : 'any'
+    : 'T'
   // 映射的方法名
   const mapping = config.projectMapping[projectId].exportName
   // 请求方法
@@ -133,7 +133,7 @@ function generateApiFunction (api: IApiInfoResponse, projectName: string, projec
   // 请求Query
   const queryParam = api.detail.query && api.detail.query.length > 0 ? 'params: query' : ''
   const bodyContent = apiBodyTemplate.replace('{Description}', description)
-    .replace('{InterfaceName}', interfaceName)
+    .replace('{InterfaceName}', `${interfaceName}${response === 'T' ? '<T = any>' : ''}`)
     .replace('{UrlParams}', urlParams)
     .replace('{Query}', query)
     .replace('{Body}', body)

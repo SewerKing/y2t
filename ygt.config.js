@@ -16,7 +16,7 @@ module.exports = {
       // 返回报文泛式
       wrapper: '{ code: string, message: string, data: T }'
     },
-    373: {
+    258: {
       exportName: 'nemoApi'
     }
   },

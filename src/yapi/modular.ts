@@ -49,7 +49,7 @@ export async function getModular (projectId: number): Promise<IModularResponse[]
       message: '请选择要生成的模块:',
       name: 'modularNames',
       choices: modularList.modularList.map(e => e.name),
-      pageSize: 100
+      pageSize: 20
     }]
     const { modularNames } = await inquirer.prompt(promptList)
     // 获取选择的模块

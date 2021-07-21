@@ -88,6 +88,28 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
         .replace(/(\s*\/\/\s*#append\s*request)/, `\r\n${requestContent.join('\r\n')} $1`)
         .replace(/(\s*\/\/\s*#append\s*response)/, `\r\n${responseContent.join('\r\n')} $1`)
     }
+    // 判断tslint配置
+    const tslintReg = /\/\/\s*@ts-ignore/
+    const eslintReg = /\/\*\s*eslint-disable\s*\*\//
+    const hasTslintIgnore = tslintReg.test(dtsContent)
+    const hasEslintIgnore = eslintReg.test(dtsContent)
+    if (config.tsIgnore && !hasTslintIgnore) {
+      if (hasEslintIgnore) {
+        dtsContent = dtsContent.replace(eslintReg, '/* eslint-disable */\n// @ts-ignore\n')
+      } else {
+        dtsContent = `// @ts-ignore\n${dtsContent}`
+      }
+    }
+    if (!config.tsIgnore && hasTslintIgnore) {
+      dtsContent = dtsContent.replace(tslintReg, '')
+    }
+    // 判断eslint配置
+    if (config.esLintIgnore && !hasEslintIgnore) {
+      dtsContent = `/* eslint-disable */\n${dtsContent}`
+    }
+    if (!config.esLintIgnore && hasEslintIgnore) {
+      dtsContent = dtsContent.replace(eslintReg, '')
+    }
   } else {
     // 如果不存在该文件，则从模板新增
     const bodyContent = dtsBodyTemplate
@@ -106,7 +128,15 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
   fs.writeFileSync(dtsFileName, formatCode(dtsContent))
 }
 
-// 生成请求参数
+/**
+ * @description 生成Get请求参数
+ * @author Wynne
+ * @date 2021-07-01
+ * @export
+ * @param apis
+ * @param projectName
+ * @param modularId
+ */
 function generateQueryDts (api: IApiInfoResponse) {
   if (!api?.detail?.query || api.detail.query.length === 0) return undefined
   const queryBody = api.detail.query.map(e => {
