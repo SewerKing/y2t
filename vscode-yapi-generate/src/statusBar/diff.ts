@@ -114,7 +114,7 @@ const handleDiffApi = async () => {
             const { projectId, projectName, modularId, modularName, basePath } = cache
             try {
               // 进度百分比
-              const increment = (count / data.length) * 100
+              const increment = parseInt(((count / data.length) * 100).toFixed(0));
               // 更新进度信息
               progressView.update(`(${count}/${data.length})`, increment)
               // 生成文件

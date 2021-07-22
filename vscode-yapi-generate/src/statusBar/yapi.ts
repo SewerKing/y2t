@@ -156,8 +156,7 @@ const handleGenerateFiles = async (menu: QuickMenuItem[]) => {
   for (const { id: modularId, label: modularName } of menu) {
     try {
       // 进度百分比
-      const increment = (count / menu.length) * 100
-      console.log('increment', increment)
+      const increment = parseInt(((count / menu.length) * 100).toFixed(0));
       // 更新进度信息
       progressView.update(`(${count}/${menu.length})`, increment)
       // 调用生成文件函数
