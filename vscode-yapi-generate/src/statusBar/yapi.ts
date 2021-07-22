@@ -24,7 +24,7 @@ let statusBar!: StatusBarItem
 /**
  * statusBar注册command-Key
  */
-let statusBarCommand = YapiStatusBarCommandType.getQuickPick
+const statusBarCommand = YapiStatusBarCommandType.getQuickPick
 
 /**
  * @Author: BEN
@@ -156,7 +156,7 @@ const handleGenerateFiles = async (menu: QuickMenuItem[]) => {
   for (const { id: modularId, label: modularName } of menu) {
     try {
       // 进度百分比
-      const increment = parseInt(((count / menu.length) * 100).toFixed(0));
+      const increment = parseInt(((count / menu.length) * 100).toFixed(0))
       // 更新进度信息
       progressView.update(`(${count}/${menu.length})`, increment)
       // 调用生成文件函数
@@ -174,9 +174,9 @@ const handleGenerateFiles = async (menu: QuickMenuItem[]) => {
     }
   }
   progressView.close()
-  const errorApiIds = apis.filter((item) => !item.success).map((item) => item.id)
+  const errorApiIds = apis.filter((item) => !item.success).map((item) => `${item.path} Response解析失败`)
   const errorTips =
-    errorApiIds.length > 0 ? `其中${errorApiIds.toString()}接口异常, 已默认使用any代替` : ''
+    errorApiIds.length > 0 ? `有以下${errorApiIds.length}个接口不规范, 已默认使用any代替\r\n${errorApiIds.join('\r\n')}` : ''
   window.showInformationMessage(
     `项目：${projectName} 模块：${count}/${menu.length} 生成完毕 ${errorTips}`
   )
