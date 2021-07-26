@@ -88,7 +88,7 @@ export function generateInterface (apis: IApiInfoResponse[], projectName: string
       .replace('{Wrapper}', wrapper
         ? `interface IResponseWrapper<T> ${wrapper} \r\n`
         : '') // 配置统一请求返回体
-      .replace('{Mock}', `${config.originUrl}/mock/${projectId}${basePath}`) // 替换mock路径
+      .replace('{Mock}', `${config.originUrl}/mock/${projectId}${basePath || ''}`) // 替换mock路径
       .replace('{Ignore}', ignore) // 替换忽略校验
       .replace('{dtsModule}', config.fetchModule)
     apiContent += apiList.join('\r\n')

@@ -18,6 +18,9 @@ module.exports = {
     },
     373: {
       exportName: 'nemoApi'
+    },
+    741: {
+      exportName: 'nemoApi'
     }
   },
   // 请求体实例文件路径
