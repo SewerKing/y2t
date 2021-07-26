@@ -20,7 +20,6 @@
     "inquirer": "^8.1.1",
     "json-schema-to-typescript": "^10.1.4",
     "nedb": "^1.8.0",
-    "prettier": "^2.3.2",
     "single-line-log": "^1.1.2"
   },
   "devDependencies": {
@@ -40,12 +39,15 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-promise": "^5.1.0",
+    "prettier": "^2.3.2",
     "rollup": "^2.52.7",
     "rollup-plugin-cleandir": "^1.0.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-preserve-shebangs": "^0.2.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
-    "tsconfig-paths": "^3.9.0"
+    "ts-node": "^10.1.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.3.5"
   }
 }

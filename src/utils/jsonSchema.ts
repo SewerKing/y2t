@@ -8,7 +8,7 @@ export async function jsonSchemaToDts (jsonSchema: any, name: string): Promise<s
     compile(jsonSchema, name, {
       unknownAny: false,
       bannerComment: '',
-      ignoreMinAndMaxItems: false,
+      ignoreMinAndMaxItems: true,
       unreachableDefinitions: true
     }).then(dts => {
       resolve(dts)
