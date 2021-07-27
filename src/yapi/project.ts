@@ -2,6 +2,7 @@ import { http } from '../utils/http'
 import inquirer, { QuestionCollection } from 'inquirer'
 import { zhCN2EN } from '../utils/name'
 import { IListItem, IProjectResponse } from '../typing/yapi'
+import { getConfig } from '@/utils/config'
 
 /**
  * @description 获取项目列表
@@ -64,6 +65,9 @@ export async function getProjectId (groupId: number): Promise<IProjectResponse> 
     const projectId = project?.id
     if (!projectId) {
       throw new Error('选择的项目不存在')
+    }
+    if (Object.keys(getConfig().projectMapping).every(e => e.toString() !== projectId.toString())) {
+      throw new Error(`项目ID: ${projectId} 未在projectMapping中配置映射关系`)
     }
     resolve({
       projectId: projectId,
