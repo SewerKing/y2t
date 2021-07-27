@@ -69,8 +69,9 @@ export async function generateTypescript (): Promise<void> {
     })
     progress.push(index + 1)
   }
+  const config = getConfig()
   // 创建输出文件夹
-  const outdir = path.resolve(getConfig().outDir)
+  const outdir = path.resolve(config.outDir)
   generateDir(outdir)
   // 获取接口总数
   const sum = apiInfos.reduce((pre, curr) => {

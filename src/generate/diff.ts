@@ -85,13 +85,14 @@ export async function getUpdateList (localCaches: IApiCache[]): Promise<IApiCach
  */
 export async function generateUpdateInterface (list: IApiCache[]): Promise<IDiffUpdateResponse[]> {
   // 获取参数
+  const config = getConfig()
   const result: IDiffUpdateResponse[] = []
   let apiInfos: IApiInfoList[] = []
   for (const item of list) {
     // 获取接口列表
     const apiList = await getApiList(item.modularId)
     // 生成输出文档
-    const outdir = path.resolve(getConfig().outDir)
+    const outdir = path.resolve(config.outDir)
     generateDir(outdir)
     // 生成声明文件
     generateDeclaration(apiList, item.projectName, item.modularId)
