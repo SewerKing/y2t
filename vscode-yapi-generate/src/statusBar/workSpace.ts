@@ -11,7 +11,7 @@ let statusBar!: StatusBarItem
 /**
  * statusBar注册command-Key
  */
-let statusBarCommand = WorkspaceCommandType.getWorkSpace
+const statusBarCommand = WorkspaceCommandType.getWorkSpace
 
 /**
  * @Author: BEN

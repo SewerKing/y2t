@@ -174,9 +174,13 @@ const handleGenerateFiles = async (menu: QuickMenuItem[]) => {
     }
   }
   progressView.close()
-  const errorApiIds = apis.filter((item) => !item.success).map((item) => `${item.path} Response解析失败`)
+  const errorApiIds = apis
+    .filter((item) => !item.success)
+    .map((item) => `${item.path} Response解析失败`)
   const errorTips =
-    errorApiIds.length > 0 ? `有以下${errorApiIds.length}个接口不规范, 已默认使用any代替\r\n${errorApiIds.join('\r\n')}` : ''
+    errorApiIds.length > 0
+      ? `有以下${errorApiIds.length}个接口不规范, 已默认使用any代替\r\n${errorApiIds.join('\r\n')}`
+      : ''
   window.showInformationMessage(
     `项目：${projectName} 模块：${count}/${menu.length} 生成完毕 ${errorTips}`
   )

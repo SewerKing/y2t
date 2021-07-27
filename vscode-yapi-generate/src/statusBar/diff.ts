@@ -12,7 +12,7 @@ import { createProgressView } from '../utils/progress'
 /**
  * statusBar注册command-Key
  */
-let statusBarCommand = DiffCommandType.DiffApi
+const statusBarCommand = DiffCommandType.DiffApi
 
 /**
  * statusBar实例
@@ -114,7 +114,7 @@ const handleDiffApi = async () => {
             const { projectId, projectName, modularId, modularName, basePath } = cache
             try {
               // 进度百分比
-              const increment = parseInt(((count / data.length) * 100).toFixed(0));
+              const increment = parseInt(((count / data.length) * 100).toFixed(0))
               // 更新进度信息
               progressView.update(`(${count}/${data.length})`, increment)
               // 生成文件
@@ -135,9 +135,9 @@ const handleDiffApi = async () => {
               throw new Error(`api (${count}/${data.length}) 更新失败`)
             }
           }
-          const errorApiIds = apis.filter((item) => !item.success).map((item) => item.id)
+          const errorApiIds = apis.filter((item) => !item.success).map((item) => `${item.path} Response解析失败`)
           const errorTips =
-            errorApiIds.length > 0 ? `其中${errorApiIds.toString()}接口异常, 已默认使用any代替` : ''
+            errorApiIds.length > 0 ? `有以下${errorApiIds.length}个接口不规范, 已默认使用any代替\r\n${errorApiIds.join('\r\n')}` : ''
           window.showInformationMessage(`模块：${count}/${data.length} 生成完毕 ${errorTips}`)
         }
       })
