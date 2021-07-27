@@ -19,9 +19,8 @@ import { IApiDetailParam, IApiInfoResponse } from '../typing/yapi'
  * @return {*}
  */
 export function generateInterface (apis: IApiInfoResponse[], projectName: string, projectId: number, basePath: string, modularId: number, onProgress?: () => void) {
-  const config = getConfig()
   const apiTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/api.tpl')).toString()
-  if (!(projectId in config.projectMapping)) {
+  if (!(projectId in getConfig().projectMapping)) {
     throw new Error(`生成失败，项目：${projectName}，ID：${projectId} 未配置 projectMapping`)
   }
 
@@ -45,7 +44,7 @@ export function generateInterface (apis: IApiInfoResponse[], projectName: string
     apiList.push(`//#endregion interface:${modularId}`)
   }
   // api文件存放路径
-  const apiFilePath = path.resolve(`${config.outDir}/${underlineToHump(projectName)}`)
+  const apiFilePath = path.resolve(`${getConfig().outDir}/${underlineToHump(projectName)}`)
   // api文件的完整文件名
   const apiFileName = path.resolve(`${apiFilePath}/index.ts`)
   // api文件内容
@@ -57,7 +56,7 @@ export function generateInterface (apis: IApiInfoResponse[], projectName: string
     // 判断requestFilePath是否变更
     const requestFilePathReg = /import\s\*\sas\sdefs\sfrom\s["|'|`][\S]*["|'|`]/
     const requestScript = originContent.match(requestFilePathReg)?.[0] ?? ''
-    const newRequestScript = `import * as defs from '${config.requestFilePath}';`
+    const newRequestScript = `import * as defs from '${getConfig().requestFilePath}';`
     if (requestScript && requestScript !== newRequestScript) {
       originContent = originContent.replace(
         requestFilePathReg,
@@ -77,20 +76,20 @@ export function generateInterface (apis: IApiInfoResponse[], projectName: string
     }
   } else {
     // 统一返回体wrapper
-    const wrapper = config.projectMapping[projectId].wrapper
+    const wrapper = getConfig().projectMapping[projectId].wrapper
     // 请求方法文件路径
-    const requestFilePath = config.requestFilePath
+    const requestFilePath = getConfig().requestFilePath
     // 校验忽略文本
-    const ignore = `${config.esLintIgnore ? '/* eslint-disable */\n' : ''}${config.tsIgnore ? '// @ts-ignore\n' : ''}`
+    const ignore = `${getConfig().esLintIgnore ? '/* eslint-disable */\n' : ''}${getConfig().tsIgnore ? '// @ts-ignore\n' : ''}`
     // 如果不存在该文件，则从模板新增
     apiContent = apiTemplate
       .replace('{RequestFilePath}', requestFilePath) // 替换请求方法文件路径
       .replace('{Wrapper}', wrapper
         ? `interface IResponseWrapper<T> ${wrapper} \r\n`
         : '') // 配置统一请求返回体
-      .replace('{Mock}', `${config.originUrl}/mock/${projectId}${basePath || ''}`) // 替换mock路径
+      .replace('{Mock}', `${getConfig().originUrl}/mock/${projectId}${basePath || ''}`) // 替换mock路径
       .replace('{Ignore}', ignore) // 替换忽略校验
-      .replace('{dtsModule}', config.fetchModule)
+      .replace('{dtsModule}', getConfig().fetchModule)
     apiContent += apiList.join('\r\n')
   }
   // 生成输出文件夹
@@ -100,7 +99,6 @@ export function generateInterface (apis: IApiInfoResponse[], projectName: string
 
 // 生成Api请求方法
 function generateApiFunction (api: IApiInfoResponse, projectName: string, projectId: number) {
-  const config = getConfig()
   const apiBodyTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/body.tpl')).toString()
   // 获取命名空间名
   const namespaceName = getNamespace(projectName)
@@ -118,12 +116,12 @@ function generateApiFunction (api: IApiInfoResponse, projectName: string, projec
   const body = isNeedBody && api.detail.body ? `body: ${getBodyPath(namespaceName, api)},\n` : ''
   // 返回的类型
   const response = api.detail.response
-    ? config.projectMapping[projectId].wrapper
+    ? getConfig().projectMapping[projectId].wrapper
       ? `IResponseWrapper<${getResponesPath(namespaceName, api)},>`
       : `${getResponesPath(namespaceName, api)},`
     : 'T'
   // 映射的方法名
-  const mapping = config.projectMapping[projectId].exportName
+  const mapping = getConfig().projectMapping[projectId].exportName
   // 请求方法
   const method = api.method.toLocaleLowerCase()
   // 请求URL

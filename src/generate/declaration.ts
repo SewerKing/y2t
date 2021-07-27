@@ -20,7 +20,6 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
   if (!apis || apis.length === 0) {
     throw new Error('生成的接口列表为空')
   }
-  const config = getConfig()
   // 声明文件模板储存地址
   const dtsTemplate = fs.readFileSync(path.join(__dirname, '../templates/dtsTemplate/dts.tpl')).toString()
   // 声明文件Body模板存储路径
@@ -64,7 +63,7 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
   requestContent.push(`//#endregion request:${modularId}`)
 
   // 校验声明文件存放路径
-  const dtsFilePath = path.resolve(`${config.outDir}/${underlineToHump(projectName)}`)
+  const dtsFilePath = path.resolve(`${getConfig().outDir}/${underlineToHump(projectName)}`)
   // 声明文件的完整文件名
   const dtsFileName = path.resolve(`${dtsFilePath}/${underlineToHump(projectName, true)}.d.ts`)
   // 声明文件内容
@@ -93,21 +92,21 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
     const eslintReg = /\/\*\s*eslint-disable\s*\*\//
     const hasTslintIgnore = tslintReg.test(dtsContent)
     const hasEslintIgnore = eslintReg.test(dtsContent)
-    if (config.tsIgnore && !hasTslintIgnore) {
+    if (getConfig().tsIgnore && !hasTslintIgnore) {
       if (hasEslintIgnore) {
         dtsContent = dtsContent.replace(eslintReg, '/* eslint-disable */\n// @ts-ignore\n')
       } else {
         dtsContent = `// @ts-ignore\n${dtsContent}`
       }
     }
-    if (!config.tsIgnore && hasTslintIgnore) {
+    if (!getConfig().tsIgnore && hasTslintIgnore) {
       dtsContent = dtsContent.replace(tslintReg, '')
     }
     // 判断eslint配置
-    if (config.esLintIgnore && !hasEslintIgnore) {
+    if (getConfig().esLintIgnore && !hasEslintIgnore) {
       dtsContent = `/* eslint-disable */\n${dtsContent}`
     }
-    if (!config.esLintIgnore && hasEslintIgnore) {
+    if (!getConfig().esLintIgnore && hasEslintIgnore) {
       dtsContent = dtsContent.replace(eslintReg, '')
     }
   } else {
@@ -116,7 +115,7 @@ export async function generateDeclaration (apis: IApiInfoResponse[], projectName
       .replace('{ResponseData}', responseContent.join('\r\n')) // 替换response
       .replace('{RequestData}', requestContent.join('\r\n')) // 替换request
     // 校验忽略文本
-    const ignore = `${config.esLintIgnore ? '/* eslint-disable */\n' : ''}${config.tsIgnore ? '// @ts-ignore\n' : ''}`
+    const ignore = `${getConfig().esLintIgnore ? '/* eslint-disable */\n' : ''}${getConfig().tsIgnore ? '// @ts-ignore\n' : ''}`
     dtsContent = dtsTemplate
       .replace('{ProjectName}', underlineToHump(projectName, true)) // 替换命名空间名
       .replace('{BodyData}', bodyContent) // 替换Body
