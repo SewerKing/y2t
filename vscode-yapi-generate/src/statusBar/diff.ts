@@ -135,6 +135,7 @@ const handleDiffApi = async () => {
               throw new Error(`api (${count}/${data.length}) 更新失败`)
             }
           }
+          progressView.close()
           const errorApiIds = apis.filter((item) => !item.success).map((item) => `${item.path} Response解析失败`)
           const errorTips =
             errorApiIds.length > 0 ? `有以下${errorApiIds.length}个接口不规范, 已默认使用any代替\r\n${errorApiIds.join('\r\n')}` : ''
