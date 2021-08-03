@@ -1,7 +1,6 @@
-import { window } from 'vscode'
-import { Progress, ProgressLocation } from 'vscode'
+import { window, Progress, ProgressLocation } from 'vscode'
 
-export function createProgressView(title?: string) {
+export function createProgressView (title?: string) {
   return new ProgressView(title)
 }
 
@@ -12,7 +11,7 @@ class ProgressView {
   private _currentText: string
   private _promise: Promise<void>
 
-  constructor(readonly title?: string) {
+  constructor (readonly title?: string) {
     this._resolver = undefined as unknown as (value?: any) => void
     this._view = undefined as unknown as Progress<{ message?: string; increment?: number }>
     this._currentProgress = 0
@@ -20,7 +19,7 @@ class ProgressView {
     this._promise = undefined as unknown as Promise<void>
   }
 
-  show() {
+  show () {
     window.withProgress(
       {
         cancellable: false,
@@ -35,15 +34,15 @@ class ProgressView {
     )
   }
 
-  get text() {
+  get text () {
     return this._currentText
   }
 
-  get progress() {
+  get progress () {
     return this._currentProgress
   }
 
-  update(message: string, increment: number) {
+  update (message: string, increment: number) {
     this._currentProgress += increment
     this._currentText = message
 
@@ -54,11 +53,11 @@ class ProgressView {
     this._view.report({ message, increment })
   }
 
-  close() {
+  close () {
     this._resolver()
   }
 
-  async wait() {
+  async wait () {
     return this._promise
   }
 }

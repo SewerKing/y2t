@@ -9,7 +9,7 @@ export enum YapiStatusBarCommandType {
  * Yapi-statusBar文本枚举
  */
 export enum YapiStatusBarText {
-  getQuickPick = 'Y2G'
+  getQuickPick = 'Y2T'
 }
 
 /**
@@ -29,7 +29,7 @@ export enum DiffCommandType {
  * DiffApi-statusBar文本枚举
  */
 export enum DiffStatusBarText {
-  DiffApi = 'Y2G-DIFF'
+  DiffApi = 'Y2T-DIFF'
 }
 
 /**

@@ -2,7 +2,7 @@
 	"name": "y2t-vscode-tool",
 	"displayName": "y2t",
 	"description": "yapi generation tool",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"license": "MIT",
 	"author": "Wynne, Ben",
 	"engines": {
@@ -43,6 +43,6 @@
 		"vscode-test": "^1.5.2"
 	},
 	"dependencies": {
-		"y2t": "^1.0.28"
+		"y2t": "^1.0.33"
 	}
 }
