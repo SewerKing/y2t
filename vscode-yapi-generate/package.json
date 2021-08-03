@@ -3,6 +3,7 @@
 	"displayName": "y2t",
 	"description": "yapi generation tool",
 	"version": "1.0.0",
+	"publisher": "SewerKingdom",
 	"license": "MIT",
 	"author": "Wynne, Ben",
 	"engines": {
