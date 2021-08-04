@@ -11,10 +11,7 @@ import { state } from '../store'
  * @Description: 获取生成项目路径
  */
 export const getWorkSpacePath = async (returnFirst = false) => {
-  if (!workspace.workspaceFolders?.length) {
-    window.showErrorMessage('当前没有工作空间')
-    return void 0
-  }
+  if (!workspace.workspaceFolders?.length) return void 0
   const workspaceFolders: WorkSpaceQuickPick[] = workspace.workspaceFolders.map((item) => ({
     index: item.index,
     name: item.name,
