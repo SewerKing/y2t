@@ -1,6 +1,6 @@
 {
   "name": "y2t",
-  "version": "1.0.33",
+  "version": "0.0.2",
   "description": "Yapi 生成 Typescript`请求方法`及`声明文件`工具",
   "main": "lib/core/core.js",
   "types": "lib/core/src/core.d.ts",

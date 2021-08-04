@@ -13,3 +13,4 @@ src/utils/data
 .lock-wscript
 .svn
 .ygt.config.js
+vscode-yapi-generate
