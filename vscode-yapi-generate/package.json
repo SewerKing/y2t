@@ -11,7 +11,7 @@
 		"url": "https://github.com/SewerKing/y2t.git"
 	},
 	"engines": {
-		"vscode": "^1.55.0"
+		"vscode": "^1.57.0"
 	},
 	"categories": [
 		"Other"
