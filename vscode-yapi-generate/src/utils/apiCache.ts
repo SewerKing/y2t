@@ -19,11 +19,11 @@ export interface WorkStateApiCache {
 export function getApiCache(modularId?: number) {
   const cacheJsonString: string | undefined = state.context.workspaceState.get(CACHE_KEY)
   // 如果没有缓存直接返回undefined
-  if (!cacheJsonString) return void 0
+  if (!cacheJsonString) return undefined
   // 转换为map对象
   const cacheMap = JsonStringToMap(cacheJsonString)
   // 如果转换的map对象没有数据存储返回undefined
-  if (!cacheMap.size || (modularId && !cacheMap.has(modularId))) return void 0
+  if (!cacheMap.size || (modularId && !cacheMap.has(modularId))) return undefined
   // 如果未传输modularId直接返回缓存的map对象 否则返回对应id的数据
   return !modularId ? cacheMap : cacheMap.get(modularId)
 }

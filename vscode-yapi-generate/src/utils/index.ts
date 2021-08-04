@@ -11,7 +11,7 @@ import { state } from '../store'
  * @Description: 获取生成项目路径
  */
 export const getWorkSpacePath = async (returnFirst = false) => {
-  if (!workspace.workspaceFolders?.length) return void 0
+  if (!workspace.workspaceFolders?.length) return undefined
   const workspaceFolders: WorkSpaceQuickPick[] = workspace.workspaceFolders.map((item) => ({
     index: item.index,
     name: item.name,
@@ -23,7 +23,7 @@ export const getWorkSpacePath = async (returnFirst = false) => {
   const chooseFolder = await window.showWorkspaceFolderPick({
     placeHolder: state.workspacePath ? `当前工作空间：${state.workspacePath}` : '请选择工作空间'
   })
-  if (!chooseFolder) return void 0
+  if (!chooseFolder) return undefined
   return {
     index: chooseFolder.index,
     name: chooseFolder.name,
