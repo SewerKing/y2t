@@ -6,3 +6,4 @@ vscode-yapi-generate/.vscode
 /lib
 ./ygt.config.js
 .DS_Store
+ygt.config.js

@@ -12,3 +12,4 @@ src/utils/data
 .hg
 .lock-wscript
 .svn
+.ygt.config.js
