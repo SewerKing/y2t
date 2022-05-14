@@ -20,7 +20,7 @@ import { IApiDetailParam, IApiInfoResponse } from '../typing/yapi'
  */
 export function generateInterface (apis: IApiInfoResponse[], projectName: string, projectId: number, basePath: string, modularId: number, onProgress?: () => void) {
   const config = getConfig()
-  const apiTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/api.tpl')).toString()
+  const apiTemplate = config.apiTpl? config.apiTpl:fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/api.tpl')).toString()
   if (!(projectId in config.projectMapping)) {
     throw new Error(`生成失败，项目：${projectName}，ID：${projectId} 未配置 projectMapping`)
   }
@@ -101,7 +101,7 @@ export function generateInterface (apis: IApiInfoResponse[], projectName: string
 // 生成Api请求方法
 function generateApiFunction (api: IApiInfoResponse, projectName: string, projectId: number) {
   const config = getConfig()
-  const apiBodyTemplate = fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/body.tpl')).toString()
+  const apiBodyTemplate = config.bodyTpl? config.bodyTpl : fs.readFileSync(path.join(__dirname, '../templates/apiTemplate/body.tpl')).toString()
   // 获取命名空间名
   const namespaceName = getNamespace(projectName)
   // 是否需要body
@@ -130,6 +130,7 @@ function generateApiFunction (api: IApiInfoResponse, projectName: string, projec
   const url = api.path.replace(/{(.*?)}/g, '${$1}')
   // 请求Body
   const bodyParam = isNeedBody ? api.detail.body ? 'body,' : 'undefined,' : ''
+  const dataParam = (isNeedBody && api.detail.body) ? 'data: body,' : ''
   // 请求Query
   const queryParam = api.detail.query && api.detail.query.length > 0 ? 'params: query' : ''
   const bodyContent = apiBodyTemplate.replace('{Description}', description)
@@ -142,6 +143,7 @@ function generateApiFunction (api: IApiInfoResponse, projectName: string, projec
     .replace('{Method}', method)
     .replace('{Url}', url)
     .replace('{BodyParam}', bodyParam)
+    .replace('{DataParam}', dataParam)
     .replace('{QueryParam}', queryParam)
   return bodyContent
 }

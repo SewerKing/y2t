@@ -10,6 +10,10 @@ export interface IProjectMapping {
 export interface IConfig {
   // 账号
   account: string,
+  // api 模板
+  apiTpl: string,
+  // body 模板
+  bodyTpl: string,
   // 密码
   password: string,
   // 原地址
