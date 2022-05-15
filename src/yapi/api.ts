@@ -16,6 +16,7 @@ export async function getApiList (modularId: number): Promise<IApiInfoResponse[]
         const detail = await getApiDetail(item._id)
         apiList.push({
           id: item._id,
+          tag: item.tag,
           title: item.title,
           path: item.path,
           method: item.method,

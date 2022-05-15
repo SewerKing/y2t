@@ -106,6 +106,8 @@ function generateApiFunction (api: IApiInfoResponse, projectName: string, projec
   const namespaceName = getNamespace(projectName)
   // 是否需要body
   const isNeedBody = ['post', 'put'].includes(api.method.toLocaleLowerCase())
+  const tag = api.tag?api.tag.join():''
+  const tagParam = tag?`tag: ${tag}`: ''
   // 接口描述
   const description = api.title
   // 接口名字
@@ -134,6 +136,8 @@ function generateApiFunction (api: IApiInfoResponse, projectName: string, projec
   // 请求Query
   const queryParam = api.detail.query && api.detail.query.length > 0 ? 'params: query' : ''
   const bodyContent = apiBodyTemplate.replace('{Description}', description)
+    .replace('{tag}', tag)
+    .replace('{tagParam}', tagParam)
     .replace('{InterfaceName}', `${interfaceName}${response === 'T' ? '<T = any>' : ''}`)
     .replace('{UrlParams}', urlParams)
     .replace('{Query}', query)
