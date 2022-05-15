@@ -8,6 +8,8 @@ export interface IProjectMapping {
 
 // 配置文件
 export interface IConfig {
+  // token
+  token: string,
   // 账号
   account: string,
   // api 模板
