@@ -47,7 +47,8 @@ export async function getApiDetail (apiId: number): Promise<IApiDetailResult> {
       let response
       // 解析Response
       try {
-        response = apiDetail?.res_body ? JSON.parse(apiDetail.res_body) : undefined
+        // FIX FOR YAPI: https://github.com/SewerKing/y2t/issues/7
+        response = apiDetail?.res_body ? JSON.parse(apiDetail.res_body.replaceAll('"$ref','"$$ref')) : undefined
       } catch (err) {
         response = undefined
         success = false
