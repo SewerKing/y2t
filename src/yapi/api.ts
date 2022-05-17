@@ -32,6 +32,10 @@ export async function getApiList (modularId: number): Promise<IApiInfoResponse[]
   })
 }
 
+const replace$ = function (str:string) {
+  return str.replace(/\"\$ref/g,'"$$$ref')
+}
+
 // 获取api详情
 export async function getApiDetail (apiId: number): Promise<IApiDetailResult> {
   return new Promise((resolve) => {
@@ -48,7 +52,7 @@ export async function getApiDetail (apiId: number): Promise<IApiDetailResult> {
       // 解析Response
       try {
         // FIX FOR YAPI: https://github.com/SewerKing/y2t/issues/7
-        response = apiDetail?.res_body ? JSON.parse(apiDetail.res_body.replaceAll('"$ref','"$$ref')) : undefined
+        response = apiDetail?.res_body ? JSON.parse(replace$(apiDetail.res_body)) : undefined
       } catch (err) {
         response = undefined
         success = false
