@@ -60,7 +60,7 @@ export async function getApiDetail (apiId: number): Promise<IApiDetailResult> {
       }
       // 解析Body
       try {
-        body = apiDetail?.req_body_other ? JSON.parse(apiDetail.req_body_other) : undefined
+        body = apiDetail?.req_body_other ? JSON.parse(replace$(apiDetail.req_body_other)) : undefined
       } catch (err) {
         response = undefined
         success = false
