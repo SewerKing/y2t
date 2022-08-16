@@ -16,6 +16,7 @@ export async function getApiList (modularId: number): Promise<IApiInfoResponse[]
         const detail = await getApiDetail(item._id)
         apiList.push({
           id: item._id,
+          tag: item.tag,
           title: item.title,
           path: item.path,
           method: item.method,
@@ -29,6 +30,10 @@ export async function getApiList (modularId: number): Promise<IApiInfoResponse[]
       throw new Error(`yapi拉取接口列表失败：${err.toString()}`)
     })
   })
+}
+
+const replace$ = function (str:string) {
+  return str.replace(/\"\$ref/g,'"$$$ref')
 }
 
 // 获取api详情
@@ -46,7 +51,8 @@ export async function getApiDetail (apiId: number): Promise<IApiDetailResult> {
       let response
       // 解析Response
       try {
-        response = apiDetail?.res_body ? JSON.parse(apiDetail.res_body) : undefined
+        // FIX FOR YAPI: https://github.com/SewerKing/y2t/issues/7
+        response = apiDetail?.res_body ? JSON.parse(replace$(apiDetail.res_body)) : undefined
       } catch (err) {
         response = undefined
         success = false
@@ -54,7 +60,7 @@ export async function getApiDetail (apiId: number): Promise<IApiDetailResult> {
       }
       // 解析Body
       try {
-        body = apiDetail?.req_body_other ? JSON.parse(apiDetail.req_body_other) : undefined
+        body = apiDetail?.req_body_other ? JSON.parse(replace$(apiDetail.req_body_other)) : undefined
       } catch (err) {
         response = undefined
         success = false

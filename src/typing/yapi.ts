@@ -28,6 +28,7 @@ export interface IApiInfoList {
 // api信息返回信息
 export interface IApiInfoResponse {
   id: number,
+  tag: string[],
   title: string,
   path: string,
   method: string,

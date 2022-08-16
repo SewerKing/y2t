@@ -7,6 +7,11 @@ export async function Login (): Promise<void> {
   return new Promise((resolve, reject) => {
     // 登录
     clg('yellow', '> yapi登录中...')
+    if(config.token){
+      clg('yellow', '> token登录中...')
+      setCookie(config.token)
+      return resolve()
+    }
     // 请求yapi登录接口，获取cookie
     http.post('/api/user/login', {
       email: config.account,
