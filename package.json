@@ -1,5 +1,5 @@
 {
-  "name": "y2t",
+  "name": "y2t-ldap",
   "version": "0.0.2",
   "description": "Yapi 生成 Typescript`请求方法`及`声明文件`工具",
   "main": "lib/core/core.js",
