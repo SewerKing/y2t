@@ -2,13 +2,14 @@ import { clg } from '../utils/console'
 import { getConfig } from '../utils/config'
 import { http, setCookie } from '../utils/http'
 
-export async function Login (): Promise<void> {
+export async function Login(): Promise<void> {
   const config = getConfig()
   return new Promise((resolve, reject) => {
     // 登录
     clg('yellow', '> yapi登录中...')
+    const loginUrl = config.ldap ? '/api/user/login_by_ldap' : '/api/user/login'
     // 请求yapi登录接口，获取cookie
-    http.post('/api/user/login', {
+    http.post(loginUrl, {
       email: config.account,
       password: config.password
     }).then(res => {

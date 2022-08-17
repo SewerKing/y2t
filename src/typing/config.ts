@@ -12,6 +12,8 @@ export interface IConfig {
   account: string,
   // 密码
   password: string,
+  // ldap
+  ldap: boolean,
   // 原地址
   originUrl: string,
   // 输出目录
